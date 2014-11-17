@@ -1,0 +1,852 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"targ",
+				"targetid"
+			],
+			[
+				"remo",
+				"removeClass"
+			],
+			[
+				"bol",
+				"bolder"
+			],
+			[
+				"font",
+				"font-weight"
+			],
+			[
+				"co",
+				"console"
+			],
+			[
+				"parse",
+				"parseInt"
+			],
+			[
+				"cli",
+				"clipPath"
+			],
+			[
+				"mar",
+				"margin-bottom"
+			],
+			[
+				"text",
+				"text-indent"
+			],
+			[
+				"pre",
+				"prettify.js"
+			],
+			[
+				"smp3-y",
+				"smp3-y-zkabe2.png	w:800 h:450"
+			],
+			[
+				"smp3-",
+				"smp3-x-zkabe2.png	w:800 h:450"
+			],
+			[
+				"pos",
+				"position"
+			],
+			[
+				"g_",
+				"g_chipsize"
+			],
+			[
+				"bac",
+				"background-repeat"
+			],
+			[
+				"g",
+				"g_chipsieze"
+			],
+			[
+				"g_ma",
+				"g_maxcolumn"
+			],
+			[
+				"wid",
+				"width"
+			],
+			[
+				"border-co",
+				"border-collapse"
+			],
+			[
+				"hea",
+				"header	Tag"
+			],
+			[
+				"des",
+				"destroyed	Meteor: Template.myTemplate.destroyed = function ( ) { ... }"
+			],
+			[
+				"destr",
+				"destroy"
+			],
+			[
+				"g_u",
+				"g_users"
+			],
+			[
+				"g_users",
+				"g_usershandle"
+			],
+			[
+				"sup",
+				"superuser"
+			],
+			[
+				"pro",
+				"profile"
+			],
+			[
+				"user",
+				"userId	Meteor: this.userId"
+			],
+			[
+				"lo",
+				"loginform"
+			],
+			[
+				"Sessio",
+				"Session.get	Meteor: Session.get(key)"
+			],
+			[
+				"bor",
+				"border-radius"
+			],
+			[
+				"ma",
+				"margin-bottom"
+			],
+			[
+				"Se",
+				"Session.set	Meteor: Session.set(key, value)"
+			],
+			[
+				"Session",
+				"Session.set	Meteor: Session.set(key, value)"
+			],
+			[
+				"show",
+				"showLoginFormStatus"
+			],
+			[
+				"Mete",
+				"Meteor.call	Meteor.call(name, param1, param2, ... [, asyncCallback])"
+			],
+			[
+				"eve",
+				"events	Meteor: Template.myTemplate.events(eventMap)"
+			],
+			[
+				"Sessi",
+				"Session.get	Meteor: Session.get(key)"
+			],
+			[
+				"Me",
+				"Meteor.user	Meteor.user()"
+			],
+			[
+				"A",
+				"Accounts.config	Meteor: Accounts.config(options)"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"val",
+				"value"
+			],
+			[
+				"fu",
+				"function"
+			],
+			[
+				"crea",
+				"createuserform"
+			],
+			[
+				"newpass",
+				"newpassword2"
+			],
+			[
+				"m",
+				"margin-top"
+			],
+			[
+				"Sess",
+				"Session.set	Meteor: Session.set(key, value)"
+			],
+			[
+				"Meteo",
+				"Meteor.call	Meteor.call(name, param1, param2, ... [, asyncCallback])"
+			],
+			[
+				"l",
+				"length"
+			],
+			[
+				"fo",
+				"form	Tag"
+			],
+			[
+				"r",
+				"relative"
+			],
+			[
+				"in",
+				"inline-block"
+			],
+			[
+				"list",
+				"list-style-type"
+			],
+			[
+				"lw",
+				"lw_todo"
+			],
+			[
+				"lwtdm",
+				"lwtdm_description_box"
+			],
+			[
+				"for",
+				"foreach	foreach …"
+			],
+			[
+				"word",
+				"wordpress"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"trai",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"ena",
+				"Package Control: Enable Package"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"livere",
+				"LiveReload: Enable/disable plug-ins"
+			],
+			[
+				"html",
+				"Set Syntax: HTML"
+			],
+			[
+				"fe",
+				"Fetch: Package"
+			],
+			[
+				"fetc",
+				"Fetch: Package"
+			],
+			[
+				"fet",
+				"Fetch: Manage"
+			],
+			[
+				"disa",
+				"Package Control: Disable Package"
+			],
+			[
+				"enable",
+				"Package Control: Enable Package"
+			],
+			[
+				"han",
+				"Set Syntax: Handlebars"
+			],
+			[
+				"markdo",
+				"Set Syntax: Markdown"
+			],
+			[
+				"handl",
+				"Set Syntax: Handlebars"
+			],
+			[
+				"pack",
+				"Package Control: Remove Package"
+			],
+			[
+				"packa",
+				"Package Control: List Packages"
+			],
+			[
+				"rece",
+				"RecentActiveFiles: recent_active_files"
+			],
+			[
+				"dis",
+				"Package Control: Disable Package"
+			],
+			[
+				"live",
+				"LiveReload: Enable/disable plug-ins"
+			],
+			[
+				"Settings",
+				"Preferences: Settings - User"
+			],
+			[
+				"package control",
+				"Preferences: Package Control Settings – Default"
+			],
+			[
+				"list",
+				"List bound keys"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"om",
+				"OmniMarkupPreviewer: Preview Current Markup in Browser"
+			],
+			[
+				"omu",
+				"Preferences: OmniMarkupPreviewer Settings – User"
+			],
+			[
+				"omni",
+				"OmniMarkupPreviewer: Preview Current Markup in Browser"
+			],
+			[
+				"",
+				"Base Encoding: Base64 Encode Selection(s)"
+			],
+			[
+				"encode",
+				"Emmet: Encode\\Decode Image to data:URL"
+			],
+			[
+				"emmet",
+				"Emmet: Encode\\Decode Image to data:URL"
+			],
+			[
+				"Snippet: ",
+				"Snippet: html"
+			],
+			[
+				"emmet enco",
+				"Emmet: Encode\\Decode Image to data:URL"
+			],
+			[
+				"mark",
+				"Markdown Preview: Github Flavored Markdown: Preview in Browser"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"re",
+				"Package Control: Remove Package"
+			],
+			[
+				"diff",
+				"Set Syntax: Diff"
+			],
+			[
+				"mar",
+				"Markdown Preview: Python Markdown: Preview in Browser"
+			],
+			[
+				"ma",
+				"Markdown Preview: Github Flavored Markdown: Copy to Clipboard"
+			],
+			[
+				"inse",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"pac",
+				"Preferences: Browse Packages"
+			]
+		],
+		"width": 647.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)",
+			"View Diff",
+			"view diff",
+			"import urllib.request,os; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), 'wb').write(urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ','%20')).read())"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/ohtsuy1/SkyDrive/current-document/_mproject/flower"
+	],
+	"file_history":
+	[
+		"/Users/ohtsuy1/SkyDrive/current-document/_mproject/flower/flower.sublime-project",
+		"/Users/ohtsuy1/SkyDrive/current-document/_mproject/flower/client/form_template.html",
+		"/Users/ohtsuy1/SkyDrive/current-document/_mproject/flower/client/flower.html",
+		"/Users/ohtsuy1/SkyDrive/current-document/_mproject/flower/client/client.js",
+		"/Users/ohtsuy1/SkyDrive/current-document/_mproject/flower/server/server.js",
+		"/Users/ohtsuy1/SkyDrive/current-document/_mproject/flower/client/template.html",
+		"/Users/ohtsuy1/SkyDrive/current-document/MdNwbp/lw_edit/chapter03/all/chap3-maekawa-all3.md",
+		"/Users/ohtsuy1/SkyDrive/current-document/ghbook/lwedit/chapter0/chap0addnew.md",
+		"/Volumes/disk/進行中の企画/マイナビSQL分析/戻し/再校修正/sqlchap4P.164追加.txt",
+		"/Users/ohtsuy1/Documents/進行中/ラトルズ14歳C言語2014/目次.txt",
+		"/Users/ohtsuy1/SkyDrive/current-document/cssarchbook/lwedit/chapter05/all.md",
+		"/Users/ohtsuy1/SkyDrive/current-document/mynabi-sql/cssjs/myrule.css",
+		"/Users/ohtsuy1/SkyDrive/current-document/mynabi-sql/chap2/mynsql-chap2.md",
+		"/Users/ohtsuy1/Documents/進行中/ラトルズ14歳C言語2014/本文/再校/14C_ch1_2_0524/14C_ch2/出力仕様書.txt",
+		"/Users/ohtsuy1/Documents/進行中/ラトルズ14歳C言語2014/本文/初校/14C_ch1_2/14C_ch2.txt",
+		"/Users/ohtsuy1/SkyDrive/current-document/mynabi-sql/chap2/vc2013chap1.md",
+		"/Users/ohtsuy1/SkyDrive/current-document/mynabi-sql/cssjs/addimagename.js",
+		"/Users/ohtsuy1/Library/Application Support/Sublime Text 3/Packages/User/gazo.sublime-snippet",
+		"/Users/ohtsuy1/SkyDrive/current-document/mynabi-sql/chap2/vc2013chap1.html",
+		"/Users/ohtsuy1/Documents/進行中/ラトルズ14歳C言語2014/準備/カバー裏素材/本書の構成.txt",
+		"/Users/ohtsuy1/SkyDrive/current-document/sbnetwork/chap2/sbn_chap2.md",
+		"/Users/ohtsuy1/SkyDrive/current-document/sbnetwork/chap2/sbn_chap2.html",
+		"/Users/ohtsuy1/SkyDrive/current-document/cssarchbook/lwedit/cssjs/myrule.css",
+		"/Users/ohtsuy1/SkyDrive/current-document/cssarchbook/lwedit/chapter02/all.html",
+		"/Users/ohtsuy1/SkyDrive/current-document/cssarchbook/lwedit/chapter01/all.html",
+		"/Users/ohtsuy1/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/Users/ohtsuy1/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/ohtsuy1/SkyDrive/current-document/14c2013/chap6/vc2013chap6.md",
+		"/Users/ohtsuy1/SkyDrive/ドキュメント/進行中/14歳C言語2013/サンプル/3dmap/stage1.txt",
+		"/Users/ohtsuy1/SkyDrive/current-document/14c2013/chap6/vc2013chap5.md",
+		"/Users/ohtsuy1/Documents/進行中/ラトルズ14歳C言語2014/14C2014_dtp.txt",
+		"/Users/ohtsuy1/SkyDrive/current-document/14c2013/chap5/vc2013chap5.md",
+		"/Users/ohtsuy1/SkyDrive/current-document/14c2013/chap5/vc2013chap5b.md",
+		"/Volumes/C/Users/ohtsuy1/Documents/Visual Studio 2013/Projects/stage1.txt",
+		"/Users/ohtsuy1/SkyDrive/current-document/14c2013/chap5/vc2013chap4.md",
+		"/Users/ohtsuy1/SkyDrive/ドキュメント/進行中/14歳C言語2013/サンプル/chap4mapeditor/14csample02.html",
+		"/Volumes/C/Users/ohtsuy1/Documents/Visual Studio 2013/Projects/chap4/media/stage1.txt",
+		"/Volumes/C/Users/ohtsuy1/Documents/Visual Studio 2013/Projects/chap4/media/stage2.txt",
+		"/Users/ohtsuy1/SkyDrive/current-document/14c2013/cssjs/myrule.css",
+		"/Users/ohtsuy1/SkyDrive/current-document/14c2013/chap2/vc2013chap2.md",
+		"/Users/ohtsuy1/SkyDrive/current-document/14c2013/chap2/vc2013chap2.html",
+		"/Users/ohtsuy1/SkyDrive/current-document/14c2013/chap1/vc2013chap1.md",
+		"/Users/ohtsuy1/SkyDrive/current-document/14c2013/chap3/vc2013chap3.md",
+		"/Users/ohtsuy1/SkyDrive/current-document/14c2013/cssjs/addimagename.js",
+		"/Users/ohtsuy1/SkyDrive/current-document/14c2013/chap4/img/cliprule.css",
+		"/Users/ohtsuy1/SkyDrive/current-document/14c2013/chap4/img/c04-01-04.png.svg",
+		"/Users/ohtsuy1/SkyDrive/current-document/14c2013/chap4/img/Untitled.svg",
+		"/Users/ohtsuy1/Library/Application Support/Sublime Text 3/Packages/User/zuchuu.sublime-snippet",
+		"/Users/ohtsuy1/SkyDrive/current-document/14c2013/Gruntfile.js",
+		"/Users/ohtsuy1/Documents/終了/Sublime Text/原稿/js/addpretty.js",
+		"/Users/ohtsuy1/SkyDrive/current-document/14c2013/cssjs/prettify.js",
+		"/Users/ohtsuy1/SkyDrive/ドキュメント/進行中/14歳C言語2013/原稿/Gruntfile.js",
+		"/Users/ohtsuy1/SkyDrive/ドキュメント/進行中/14歳C言語2013/原稿/chap1/vc2013chap1.md",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/原稿/hayasisama/作例に関するメモ.txt",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/戻り/はじめに.txt",
+		"/Users/ohtsuy1/Documents/進行中/SBすらすらネットワーク/割り付け/目次0331.txt",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/戻り/再校/その他の再校修正.txt",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/戻り/再校/著者プロフィール.txt",
+		"/Users/ohtsuy1/SkyDrive/ドキュメント/進行中/14歳C言語2013/サンプル/js/14csample03.js",
+		"/Users/ohtsuy1/SkyDrive/ドキュメント/進行中/14歳C言語2013/サンプル/js/14csample01.js",
+		"/Users/ohtsuy1/SkyDrive/ドキュメント/進行中/14歳C言語2013/サンプル/js/14csample02.js",
+		"/Volumes/disk/進行中の企画/MdNjQueryデザインのメソッド/原稿/turusama_1/001/001.md",
+		"/Users/ohtsuy1/SkyDrive/ドキュメント/進行中/14歳C言語2013/サンプル/14csample01.html",
+		"/Users/ohtsuy1/SkyDrive/ドキュメント/進行中/14歳C言語2013/サンプル/css/14csample01.css",
+		"/Users/ohtsuy1/Library/Application Support/Sublime Text 3/Packages/User/otmyjquery.sublime-snippet",
+		"/Users/ohtsuy1/Library/Application Support/Sublime Text 3/Cache/JavaScript/JavaScript.tmLanguage.cache",
+		"/Users/ohtsuy1/Library/Application Support/Sublime Text 3/Packages/HTML/HTML.tmLanguage",
+		"/Users/ohtsuy1/SkyDrive/ドキュメント/進行中/14歳C言語2013/サンプル/js/.bowerrc",
+		"/Users/ohtsuy1/SkyDrive/ドキュメント/進行中/14歳C言語2013/サンプル/.travis.yml",
+		"/Users/ohtsuy1/SkyDrive/ドキュメント/進行中/14歳C言語2013/サンプル/.bowerrc",
+		"/Users/ohtsuy1/SkyDrive/ドキュメント/進行中/14歳C言語2013/サンプル/sample01.html",
+		"/Users/ohtsuy1/SkyDrive/ドキュメント/進行中/14歳C言語2013/サンプル/css/14csample.css",
+		"/Users/ohtsuy1/Library/Application Support/Sublime Text 3/Packages/User/Fetch.sublime-settings",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/戻り/山本さん校正/続いて山本さんの校正です.txt",
+		"/Users/ohtsuy1/Documents/終了/Sublime Text/原稿/st-chap1gen.md",
+		"/Users/ohtsuy1/git-book/s/0-intro-book.md",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/戻り/turusama_校正/003/中略部分.html",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/戻り/turusama_校正/003/003.md",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/戻り/turusama_校正/003/中略部分.md",
+		"/Users/ohtsuy1/Documents/進行中/CandRGit逆引き本/原稿/整理原稿/第14段/Appendix-1-service-bitbucket.md",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/原稿/jq_yamamotosama1/slider/html/js/slider.js",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/原稿/jq_yamamoto2_scroll/html/js/scrollbg.js",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/原稿/jq_yamamoto2_scroll/html/js/scrollspace.js",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/原稿/jq_yamamoto2_scroll/html/index.html",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/原稿/turusama_2/005/005.md",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/原稿/turusama_3/まとめの原稿/005.md",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/原稿/turusama_3/まとめの原稿/004.md",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/原稿/turusama_3/004/004.md",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/原稿/turusama_3/まとめの原稿/006.md",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/原稿/turusama_3/まとめの原稿/003.md",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/原稿/turusama_1/003/003.md",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/原稿/turusama_3/まとめの原稿/002.md",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/原稿/turusama_1/002/002.md",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/原稿/turusama_3/まとめの原稿/001.md",
+		"/Users/ohtsuy1/Documents/進行中/MdNjQueryのメソッド/原稿/turusama_1/001/001.md",
+		"/Users/ohtsuy1/Documents/進行中/CandRGit逆引き本/原稿/整理原稿/第13段/appendix1-gen.md",
+		"/Users/ohtsuy1/Documents/進行中/CandRGit逆引き本/原稿/整理原稿/第13段/appendix1-gen.html",
+		"/Users/ohtsuy1/Documents/進行中/CandRGit逆引き本/原稿/整理原稿/第12段/chap2gen-tui0306.html",
+		"/Users/ohtsuy1/Documents/進行中/CandRGit逆引き本/原稿/整理原稿/第12段/chap2gen-tui0306.md",
+		"/Users/ohtsuy1/Documents/進行中/CandRGit逆引き本/原稿/整理原稿/第12段/s/2-reference-basic-add-f.md",
+		"/Users/ohtsuy1/Google ドライブ/lw_share04/原稿/森田様/Packages/package-05_preprocessor.md",
+		"/Users/ohtsuy1/Documents/進行中/マイナビSQL/sample_gen.md",
+		"/Users/ohtsuy1/Documents/進行中/マイナビSQL/genkou.css",
+		"/Users/ohtsuy1/Documents/進行中/CandRGit逆引き本/原稿/整理原稿/第9段/chap3gen-tui0303.html",
+		"/Users/ohtsuy1/Documents/進行中/CandRGit逆引き本/原稿/整理原稿/第9段/chap4gen-tui0303.html",
+		"/Users/ohtsuy1/Documents/進行中/CandRGit逆引き本/原稿/整理原稿/第9段/chap4gen-tui0303.md",
+		"/Users/ohtsuy1/Documents/進行中/Sublime Text/原稿/chap4-packages01/sugimoto/st.package.sugimoto.md",
+		"/Users/ohtsuy1/Documents/進行中/Sublime Text/戻り/再校戻し/再校戻し_杉本/fix_02_sugimoto_20140225.md",
+		"/Users/ohtsuy1/Documents/進行中/Sublime Text/本文/索引作業/sublime索引.txt",
+		"/Users/ohtsuy1/Library/Application Support/Sublime Text 3/Packages/Package Control/Package Control.sublime-settings",
+		"/Users/ohtsuy1/Documents/進行中/Sublime Text/戻り/再校戻し/再校戻し_杉本/fix_04_sugimoto_20140226.md",
+		"/Users/ohtsuy1/Google ドライブ/lw_share04/再校/再校戻し_杉本/fix_04_sugimoto_20140226_02.md",
+		"/Users/ohtsuy1/Google ドライブ/lw_share04/再校/再校戻し_杉本/fix_04_sugimoto_20140225.md",
+		"/Users/ohtsuy1/Google ドライブ/lw_share04/再校/再校戻し_杉本/fix_02_sugimoto_20140225.md",
+		"/Users/ohtsuy1/Documents/進行中/Sublime Text/戻り/再校戻し/再校戻し_杉本/fix_04_sugimoto_20140225.md",
+		"/Users/ohtsuy1/Documents/進行中/Sublime Text/戻り/再校戻し/再校戻し_上野/saiko_04_ueno.md",
+		"/Users/ohtsuy1/Documents/進行中/Sublime Text/戻り/再校戻し/再校戻し_上野/saiko_03_ueno.md",
+		"/Users/ohtsuy1/Documents/進行中/Sublime Text/戻り/再校戻し/再校戻し_杉本/fix_01_sugimoto_20140225.md",
+		"/Users/ohtsuy1/Documents/進行中/Sublime Text/戻り/再校戻し/再校戻し_杉本/fix_04_sugimoto_0140225tui.md",
+		"/Users/ohtsuy1/Google ドライブ/lw_share04/プロフィール/proflie_sugimoto_2.md",
+		"/Users/ohtsuy1/Google ドライブ/lw_share04/プロフィール/proflie_sugimoto.md",
+		"/Users/ohtsuy1/Documents/進行中/CandRGit逆引き本/原稿/整理原稿/第7段/toc.md",
+		"/Users/ohtsuy1/Documents/進行中/Sublime Text/原稿/st-appendixgen.html",
+		"/Users/ohtsuy1/Library/Application Support/Sublime Text 3/Packages/View In Browser/View In Browser.sublime-settings",
+		"/Users/ohtsuy1/Library/Application Support/Sublime Text 3/Packages/Default/Default (OSX).sublime-keymap",
+		"/Users/ohtsuy1/Library/Application Support/Sublime Text 3/Packages/User/Default (OSX).sublime-keymap",
+		"/Users/ohtsuy1/Library/Application Support/Sublime Text 3/Packages/User/View In Browser.sublime-settings",
+		"/Users/ohtsuy1/Library/Application Support/Sublime Text 3/Packages/BufferScroll/BufferScroll.sublime-settings"
+	],
+	"find":
+	{
+		"height": 29.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"\"taskquery\"",
+			"http",
+			"img/",
+			" ",
+			"  コラム    ",
+			"^\\t",
+			"^¥t",
+			" ",
+			"様に",
+			" ",
+			"全て",
+			" ",
+			"\\",
+			"言え",
+			"お薦め",
+			"様々",
+			"q",
+			"（改ページ）",
+			"しくみ",
+			"言え",
+			"いい",
+			"良い",
+			"ひとつ",
+			"つく",
+			"画面",
+			"サイト画像",
+			"ひとつ",
+			"作る",
+			"つくる",
+			"conv",
+			"後述",
+			"つくった",
+			"言え",
+			"言って",
+			"space",
+			"div",
+			"javascript",
+			"'9'",
+			"'2'",
+			"'2(",
+			"100, 40, g",
+			"15",
+			"CLUB",
+			"SearchEnemy",
+			"DrawMap関数",
+			"DrawMap",
+			"DrawMap関数",
+			"DrawMap",
+			"スクロール補正",
+			"［X］",
+			"［Z］",
+			"val",
+			"newlock",
+			", ",
+			"px",
+			"2重",
+			"、",
+			"LoadImage",
+			"reperem",
+			"スコープ",
+			"	",
+			"true",
+			"します。",
+			"false",
+			"ツールチップ",
+			"入力候補",
+			"	",
+			"ひとつ",
+			"様々",
+			"	",
+			"08F",
+			"	",
+			"コラム",
+			"\\",
+			"{\n",
+			"VC++2010",
+			"> ",
+			"VC++ 2010",
+			"lock",
+			"img",
+			"hide",
+			"css",
+			"left",
+			"chipsieze",
+			"i",
+			"https://github.com/Layzie/git-book/raw/master/",
+			"file:///Users/ohtsuy1/Documents/進行中/CandRGit逆引き本/原稿/整理原稿/第12段/",
+			" ",
+			"file:///Users/ohtsuy1/Documents/進行中/CandRGit逆引き本/原稿/整理原稿/第9段/",
+			"https://github.com/Layzie/git-book/raw/master/",
+			"file:///Users/ohtsuy1/Documents/進行中/CandRGit逆引き本/原稿/整理原稿/第9段/",
+			"選択文字列",
+			"選択文字列をファイル内から検索し、すべて選択状態にします。先に書いた検索置換機能のショートカットといっていいでしょう。",
+			"割り当てら",
+			"ファイルの保存",
+			"ctrl+e",
+			"ctrl+",
+			"view_in_browser",
+			"View in browser",
+			" ",
+			"###",
+			"インストール",
+			"file:///Users/ohtsuy1/Documents/進行中/Sublime Text/原稿/",
+			"］",
+			"［",
+			" -> ",
+			"：",
+			"* ",
+			"context",
+			"^\\t",
+			"\" },",
+			"\"], \"command\": \"",
+			"{ \"keys\": [\"",
+			" },\n",
+			"^\\t",
+			"^¥t",
+			"\"], \"command\": \"",
+			"],",
+			"{ \"keys\": [\"",
+			"|",
+			"*",
+			"数字のみで指定します",
+			"    ・・・",
+			"*",
+			")",
+			"(",
+			")",
+			"("
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"コラム：",
+			"（改ページ）",
+			"1つ",
+			"ひとつ",
+			"100, 36, g",
+			"CRAB",
+			"SetEnemy",
+			"二重",
+			"¥",
+			"rock",
+			"chap3ato-img",
+			"(appendix-img/",
+			"",
+			"(chap4-img2/",
+			"chap4-img2/",
+			"chap4-img2",
+			"(chap4-img/",
+			"",
+			"(chap2ato-img/",
+			"",
+			"(chap2-img/",
+			"(chap3-img/",
+			""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 29.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.markdown":
+	{
+		"height": 124.0
+	},
+	"output.sftp":
+	{
+		"height": 0.0
+	},
+	"project": "flower.sublime-project",
+	"replace":
+	{
+		"height": 54.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"",
+				"~/Documents/進行中/Sublime Text/Sublime Text基本機能リストアップ.txt"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 47.0,
+		"selected_items":
+		[
+			[
+				"",
+				"backtick"
+			]
+		],
+		"width": 392.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+		"max_columns": 2
+	}
+}

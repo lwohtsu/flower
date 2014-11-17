@@ -1,0 +1,50 @@
+<head>
+	<title>flower</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<header class="page-header">
+		<h1>flower project manager</h1>
+		{{> loginButtons}}
+	</header>
+	<div class="container-fluid">
+
+		{{#if currentUser}}
+		<!-- ログイン時の表示 -->
+		<!-- タブ -->
+		<div role="tabpanel">
+			<ul class="nav nav-tabs" id="maintab">
+			  <li role="presentation" class="active"><a href="#projectpanel" data-query="open">Open</a></li>
+			  <li role="presentation"><a href="#projectpanel" data-query="userview">UserView</a></li>
+			  <li role="presentation"><a href="#projectpanel" data-query="closed">Closed</a></li>
+			  <li role="presentation"><a href="#settingpanel">Setting</a></li>
+			</ul>
+		</div>
+		<!-- リストエリア（プロジェクトやタスクが表示される領域） -->
+		<div id="listarea" class="tab-content">
+			<!-- open〜UserViewはクエリーが違うだけで表示するパネルは同一 -->
+			<div role="tabpanel" class="tab-pane active" id="projectpanel">...
+			projects
+			</div>
+			<!-- 設定パネル -->
+			<div role="tabpanel" class="tab-pane" id="settingpanel">
+			setting
+			</div>
+		</div>
+		{{taskquery}}
+		<!-- コンソールエリア -->
+		<div id="consolearea" class="row">
+			<div class="col-md-4" id="projectform">{{> projectform}}</div>
+			<div class="col-md-8" id="taskform">{{> taskform}}</div>
+		</div>
+
+		{{else}}
+		<!-- 非ログイン時の表示 -->
+		<div class="alert alert-info">Please create user-account from [Sign in].</div>
+		{{/if}}
+	</div> <!--container-->
+</body>
+

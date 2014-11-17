@@ -1,0 +1,64 @@
+<!-- プロジェクトフォーム -->
+<template name="projectform">
+<div class=" panel panel-default">
+	<div class="panel-heading">Project Info</div>
+	<div class="panel-body">
+		<form role="form">
+			<!-- プロジェクト名 -->
+			<div class="form-group">
+				<label for="projectname">project name</label>
+				<input type="text" class="form-control" id="projectname" placeholder="projectname">
+			</div>	
+			<!-- 参加ユーザー -->
+			<div class="form-group">
+			<label for="projectuser">assigned users</label>
+			<ul class="list-group">
+				{{> projectuser}}
+				<!-- 新規ユーザー入力（オートコンプリートあり） -->
+				<input type="text" class="form-control" id="projectuser" placeholder="add user">
+			</ul>
+			</div>
+			<!-- プロジェクトメモ（Markdown） -->
+			<div class="form-group">
+				<label for="prj_memo">memo
+					<button class="btn btn-xs"><span class="glyphicon glyphicon-pencil"></span></button>
+				</label>
+				<textarea class="form-control hidden rawtext" rows="3" id="prj_memo"></textarea>
+				<div id="prj_memo_result"></div>
+			</div>
+			<!-- プロジェクトクローズ -->
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" id="closeproject"> closed
+				</label>
+			</div>
+			<button type="button" class="btn btn-xs btn-danger" id="btn_delproj">
+				<span class="glyphicon glyphicon-trash"></span>delete this
+			</button>
+		</form>
+
+		<hr/>
+		<!-- プロジェクト操作（新規作成、削除） -->
+		<button type="button" class="btn btn-success"  id="btn_newproj">
+			<span class="glyphicon glyphicon-file"></span>new project
+		</button>
+	</div>
+</div>
+</template>
+
+<!-- プロジェクトフォームの参加ユーザーリスト -->
+<template name="projectuser">
+	<li class="list-group-item">username
+	<button type="button" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	</li>
+</template>
+
+<!-- タスクフォーム -->
+<template name="taskform">
+<div class=" panel panel-default">
+	<div class="panel-heading">Task Info</div>
+	<div class="panel-body">
+	taskform
+	</div>
+</div>
+</template>
