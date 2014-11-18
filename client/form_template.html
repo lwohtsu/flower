@@ -12,19 +12,24 @@
 			<!-- 参加ユーザー -->
 			<div class="form-group">
 			<label for="projectuser">assigned users</label>
-			<ul class="list-group">
+			<ul class="list-inline">
 				{{> projectuser}}
 				<!-- 新規ユーザー入力（オートコンプリートあり） -->
-				<input type="text" class="form-control" id="projectuser" placeholder="add user">
+				<input type="text" class="form-control" id="projectuser" placeholder="add user" autocomplete="on" list="users2">
+				<datalist id="users2">
+				{{#each realusers}}
+        			{{> itemuser}}
+      			{{/each}}
+				</datalist>
 			</ul>
 			</div>
 			<!-- プロジェクトメモ（Markdown） -->
 			<div class="form-group">
-				<label for="prj_memo">memo
-					<button class="btn btn-xs"><span class="glyphicon glyphicon-pencil"></span></button>
+				<label for="prj_memo">memo (markdown)
+					<button class="btn btn-xs btn-memoedit"><span class="glyphicon glyphicon-pencil"></span></button>
 				</label>
 				<textarea class="form-control hidden rawtext" rows="3" id="prj_memo"></textarea>
-				<div id="prj_memo_result"></div>
+				<div id="prj_memo_result" class="memodown"></div>
 			</div>
 			<!-- プロジェクトクローズ -->
 			<div class="checkbox">
@@ -32,13 +37,14 @@
 					<input type="checkbox" id="closeproject"> closed
 				</label>
 			</div>
+			<!-- プロジェクト操作（削除） -->
 			<button type="button" class="btn btn-xs btn-danger" id="btn_delproj">
 				<span class="glyphicon glyphicon-trash"></span>delete this
 			</button>
 		</form>
 
 		<hr/>
-		<!-- プロジェクト操作（新規作成、削除） -->
+		<!-- プロジェクト操作（新規作成） -->
 		<button type="button" class="btn btn-success"  id="btn_newproj">
 			<span class="glyphicon glyphicon-file"></span>new project
 		</button>
@@ -58,7 +64,90 @@
 <div class=" panel panel-default">
 	<div class="panel-heading">Task Info</div>
 	<div class="panel-body">
-	taskform
+		<form role="form">
+			<!-- タスクのタイトル -->
+			<div class="form-group">
+				<label for="tasktitle">task title</label>
+				<input type="text" class="form-control" id="tasktitle" placeholder="project title">
+			</div>	
+			<!-- タスクの担当者 -->
+			<div class="row">
+			<div class="form-group col-xs-5">
+				<label for="tsk_assignee">assigned user</label>
+				<input type="text" class="form-control" id="tsk_assignee" placeholder="username" autocomplete="on" list="users1">
+				<datalist id="users1">
+				{{#each realusers}}
+        			{{> itemuser}}
+      			{{/each}}
+				{{#each virtualusers}}
+        			{{> itemuser}}
+      			{{/each}}
+				</datalist>
+			</div>
+			<!-- デッドライン（〆切り） -->
+			<div class="form-group col-xs-5">
+				<label for="tsk_deadline">deadline</label>
+				<input type="date" class="form-control" id="tsk_deadline">
+			</div>
+			</div>
+			<!-- タスククローズ -->
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" id="closetask"> closed <span id="closedate"></span>
+				</label>
+			</div>
+			<hr>
+			<!-- タスクタイマー -->
+			<div class="form-group">
+				<label for="tsk_timer">task timer</label>
+				<ul class="list-inline">
+					{{> tasktimeritem}}
+					<!-- 作業合計時間 -->
+					<li class="timer-sum">1h30m</li>
+					<!-- タイマーボタン（トグル型） -->
+					<button class="btn btn-info" id="tsk_timer">
+						<span class="glyphicon glyphicon-time"></span>
+						timer start
+					</button>
+				</ul>
+			</div>
+			<hr/>
+			<!-- コントロールボタン -->
+			<div class="list-inline">
+				<!-- タスク追加 -->
+				<button type="button" class="btn btn-success" id="btn_addtask">
+					<span class="glyphicon glyphicon-arrow-right"></span>add next
+				</button>
+				<!-- タスク分岐 -->
+				<button type="button" class="btn btn-warning" id="btn_addtask">
+					<span class="glyphicon glyphicon-arrow-down"></span>branch
+				</button>
+				<!-- タスク削除 -->
+				<button type="button" class="btn btn-xs btn-danger pull-right" id="btn_deltask">
+					<span class="glyphicon glyphicon-trash"></span>delete this
+				</button>
+			</div>
+
+			<hr/>
+			<!-- タスクメモ（Markdown） -->
+			<div class="form-group">
+				<label for="tsk_memo">memo (markdown)
+					<button class="btn btn-xs btn-memoedit"><span class="glyphicon glyphicon-pencil"></span></button>
+				</label>
+				<textarea class="form-control hidden rawtext" rows="3" id="tsk_memo"></textarea>
+				<div id="tsk_memo_result" class="memodown"></div>
+			</div>
+		</form>
 	</div>
 </div>
+</template>
+
+<!-- タスクフォームのタイマーリスト -->
+<template name="tasktimeritem">
+	<li class="list-group-item">12:10-13:40</li>
+</template>
+
+<!-- タスクフォームのユーザーリスト -->
+<template name="itemuser">
+	<option>{{username}}</option>
 </template>

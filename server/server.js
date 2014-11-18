@@ -4,3 +4,7 @@ Projects = new Mongo.Collection("projects");
 Tasks = new Mongo.Collection("tasks");
 //バーチャルズは架空のユーザー。プロジェクト管理に参加しないユーザーやクライアントとなります。
 Virtuals = new Mongo.Collection('virtuals');
+
+Meteor.publish("virtuals", function () {
+	return Virtuals.find({});
+});

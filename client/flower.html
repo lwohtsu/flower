@@ -1,33 +1,45 @@
 <head>
 	<title>flower</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/flatly/bootstrap.min.css">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-	<header class="page-header">
-		<h1>flower project manager</h1>
-		{{> loginButtons}}
+	<header>
+		<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<h1 class="navbar-brand">flower project manager</h1>
+			</div>
+			<!-- タブ -->
+			<div class="collapse navbar-collapse">
+			  	<ul class="nav navbar-nav" id="maintab">
+					<li class="active"><a href="#projectpanel" data-query="open">Open</a></li>
+					<li><a href="#projectpanel" data-query="userview">UserView</a></li>
+					<li><a href="#projectpanel" data-query="closed">Closed</a></li>
+					<li><a href="#settingpanel">Setting</a></li>
+			  	</ul>
+			  	<ul class="nav navbar-nav">
+				<li>
+					<a>
+					{{> loginButtons}}
+					</a>
+				</li>
+				</ul>
+			</div>
+		</div>
+		</nav>
 	</header>
 	<div class="container-fluid">
 
 		{{#if currentUser}}
 		<!-- ログイン時の表示 -->
-		<!-- タブ -->
-		<div role="tabpanel">
-			<ul class="nav nav-tabs" id="maintab">
-			  <li role="presentation" class="active"><a href="#projectpanel" data-query="open">Open</a></li>
-			  <li role="presentation"><a href="#projectpanel" data-query="userview">UserView</a></li>
-			  <li role="presentation"><a href="#projectpanel" data-query="closed">Closed</a></li>
-			  <li role="presentation"><a href="#settingpanel">Setting</a></li>
-			</ul>
-		</div>
 		<!-- リストエリア（プロジェクトやタスクが表示される領域） -->
-		<div id="listarea" class="tab-content">
+		<div id="listarea" class="tab-content row">
 			<!-- open〜UserViewはクエリーが違うだけで表示するパネルは同一 -->
-			<div role="tabpanel" class="tab-pane active" id="projectpanel">...
-			projects
+			<div role="tabpanel" class="tab-pane active" id="projectpanel">
+			{{> projectview}}
 			</div>
 			<!-- 設定パネル -->
 			<div role="tabpanel" class="tab-pane" id="settingpanel">
@@ -35,6 +47,7 @@
 			</div>
 		</div>
 		{{taskquery}}
+		<hr/>
 		<!-- コンソールエリア -->
 		<div id="consolearea" class="row">
 			<div class="col-md-4" id="projectform">{{> projectform}}</div>
