@@ -5,6 +5,8 @@ Accounts.ui.config({
 Session.set('taskquery', 'open');
 Session.set('selectedproject', '');
 Session.set('selectedtask', '');
+//バーチャルズは架空のユーザー。プロジェクト管理に参加しないユーザーやクライアントとなります。
+Virtuals = new Mongo.Collection('virtuals');
 Meteor.subscribe("virtuals");
 
 //body内のヘルパー
@@ -54,6 +56,14 @@ Template.taskform.rendered = function () {
     $('#taskform form button').removeAttr('disabled');        
   }
 };
+
+//プロジェクトビューのイベント
+Template.projectform.events({
+  'click #btn_newproj': function () {
+    Meteor.call('addNewProject');
+  }
+});
+
 
 //プロジェクトビューのヘルパー
 Template.projectview.helpers({

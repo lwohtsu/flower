@@ -1,10 +1,17 @@
 <template name="projectview">
+	<!-- 表示月選択 -->
+	<div id="monthselector" class="col-sm-3">
+		<div class="form-group">
+			<label for="viewmonth">view month</label>
+			<input type="month" class="form-control input-sm" id="viewmonth">
+		</div>
+	</div>
 	<!-- ユーザー選択（オートコンプリートあり） 。ユーザービューのときのみ表示-->
 	{{#if userview}}
-	<div id="userselector" class="col-md-12">
-		<div class="form-group col-md-4">
+	<div id="userselector" class="col-sm-3">
+		<div class="form-group">
 			<label for="selecteduser">user selector</label>
-			<input type="text" class="form-control" id="selecteduser" placeholder="username" autocomplete="on" list="users3">
+			<input type="text" class="form-control input-sm" id="selecteduser" placeholder="username" autocomplete="on" list="users3">
 				<datalist id="users3">
 				{{#each realusers}}
         			{{> itemuser}}
@@ -16,5 +23,7 @@
 		</div>
 	</div>
 	{{/if}}
+	<div class="col-sm-12">abcdefg</div>
+
 </template>
 

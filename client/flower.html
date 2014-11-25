@@ -3,17 +3,25 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/flatly/bootstrap.min.css">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
+	<!-- ヘッダー部分 -->
 	<header>
 		<nav class="navbar navbar-default" role="navigation">
 		<div class="container-fluid">
 			<div class="navbar-header">
+	            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+	              <span class="sr-only">Toggle navigation</span>
+	              <span class="icon-bar"></span>
+	              <span class="icon-bar"></span>
+	              <span class="icon-bar"></span>
+	            </button>
 				<h1 class="navbar-brand">flower project manager</h1>
 			</div>
 			<!-- タブ -->
-			<div class="collapse navbar-collapse">
+			<div  id="navbar" class="collapse navbar-collapse">
 			  	<ul class="nav navbar-nav" id="maintab">
 					<li class="active"><a href="#projectpanel" data-query="open">Open</a></li>
 					<li><a href="#projectpanel" data-query="userview">UserView</a></li>
@@ -31,8 +39,9 @@
 		</div>
 		</nav>
 	</header>
-	<div class="container-fluid">
 
+	<!-- コンテナ -->
+	<div class="container-fluid">
 		{{#if currentUser}}
 		<!-- ログイン時の表示 -->
 		<!-- リストエリア（プロジェクトやタスクが表示される領域） -->
@@ -46,12 +55,11 @@
 			setting
 			</div>
 		</div>
-		{{taskquery}}
 		<hr/>
 		<!-- コンソールエリア -->
 		<div id="consolearea" class="row">
-			<div class="col-md-4" id="projectform">{{> projectform}}</div>
-			<div class="col-md-8" id="taskform">{{> taskform}}</div>
+			<div class="col-sm-4" id="projectform">{{> projectform}}</div>
+			<div class="col-sm-8" id="taskform">{{> taskform}}</div>
 		</div>
 
 		{{else}}

@@ -1,2 +1,24 @@
 /*navbarにh1を突っ込むためのスタイル*/
 h1.navbar-brand{margin:0 !important;}
+
+/*.form-control{
+	padding: 4px 8px;
+	max-height: 32px;
+}*/
+
+form .list-group-item{
+	font-size:0.8em;
+	line-height: 0.8em;
+	max-height:24px;
+	padding: 4px 6px;
+}
+
+.del-item{
+	font-size:1em !important;
+	line-height: 1em !important;
+	margin-left:0.5em;
+}
+
+.form-group{
+	margin-bottom: 8px;
+}
