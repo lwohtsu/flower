@@ -9,6 +9,14 @@ Meteor.publish("virtuals", function () {
 	return Virtuals.find({});
 });
 
+Meteor.publish("projects", function(){
+	//現在のユーザーが参加しているプロジェクトのみパブリッシュする
+	return Projects.find({'urs': this.userId });
+});
+Meteor.publish("tasks", function(){
+	return Tasks.find({});
+});
+
 Meteor.methods({
 
 	//新規プロジェクトを追加
@@ -26,11 +34,11 @@ Meteor.methods({
 			prid: newprojid,		//親プロジェクト
 			mbr: true,				//マスターブランチかどうか
 			str: true,				//スタートタスクかどうか
-			ti: 'new task title',	//タスクタイトル
+			ti: 'first task title',	//タスクタイトル
 			us: Meteor.userId(),	//担当ユーザー
 			dl: new Date(),			//デッドライン
 			//ctsk 					//子タスク
 			brch: []				//ブランチ（初期値は空）
 		});
-	}
+	},
 });

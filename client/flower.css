@@ -22,3 +22,14 @@ form .list-group-item{
 .form-group{
 	margin-bottom: 8px;
 }
+
+.project{
+	border-bottom: 1px #BBB solid;
+}
+
+.project:nth-child(even){
+	background: #eff;
+}
+.project:nth-child(odd){
+	background: #ffe;
+}

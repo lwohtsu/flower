@@ -5,8 +5,13 @@ Accounts.ui.config({
 Session.set('taskquery', 'open');
 Session.set('selectedproject', '');
 Session.set('selectedtask', '');
+
 //バーチャルズは架空のユーザー。プロジェクト管理に参加しないユーザーやクライアントとなります。
+Projects = new Mongo.Collection("projects");
+Tasks = new Mongo.Collection("tasks");
 Virtuals = new Mongo.Collection('virtuals');
+Meteor.subscribe("projects");
+Meteor.subscribe("tasks");
 Meteor.subscribe("virtuals");
 
 //body内のヘルパー
@@ -79,6 +84,30 @@ Template.projectview.helpers({
   virtualusers: function(){
     return Virtuals.find({});
   }, 
+  //プロジェクト一覧
+  projects: function(){
+    return Projects.find({});
+  },
+
+});
+
+//プロジェクトテンプレートのヘルパー
+Template.project.helpers({
+  //プロジェクトが持つタスクの一覧を取得
+  tasks: function(){
+    return Tasks.find({'prid': this._id});
+  }
+});
+
+//タスクテンプレートのヘルパー
+Template.task.helpers({
+  //整形した締め切り日を返す
+  formatdeadline: function(){
+    return (this.dl.getMonth()+1) + '/' + this.dl.getDate();
+  },
+  formatname: function(){
+    return Meteor.users.findOne({'_id': this.us}).username;
+  }
 });
 
 //プロジェクトフォームのヘルパー
@@ -98,3 +127,4 @@ Template.taskform.helpers({
     return Virtuals.find({});
   }
 });
+

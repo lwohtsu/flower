@@ -1,29 +1,62 @@
 <template name="projectview">
-	<!-- 表示月選択 -->
-	<div id="monthselector" class="col-sm-3">
-		<div class="form-group">
-			<label for="viewmonth">view month</label>
-			<input type="month" class="form-control input-sm" id="viewmonth">
+	<div class="row">
+		<!-- 表示月選択 -->
+		<div id="monthselector" class="col-sm-3">
+			<div class="form-group">
+				<label for="viewmonth">view month</label>
+				<input type="month" class="form-control input-sm" id="viewmonth">
+			</div>
 		</div>
-	</div>
-	<!-- ユーザー選択（オートコンプリートあり） 。ユーザービューのときのみ表示-->
-	{{#if userview}}
-	<div id="userselector" class="col-sm-3">
-		<div class="form-group">
-			<label for="selecteduser">user selector</label>
-			<input type="text" class="form-control input-sm" id="selecteduser" placeholder="username" autocomplete="on" list="users3">
-				<datalist id="users3">
-				{{#each realusers}}
-        			{{> itemuser}}
-      			{{/each}}
-				{{#each virtualusers}}
-        			{{> itemuser}}
-      			{{/each}}
-				</datalist>
+		<!-- ユーザー選択（オートコンプリートあり） 。ユーザービューのときのみ表示-->
+		{{#if userview}}
+		<div id="userselector" class="col-sm-3">
+			<div class="form-group">
+				<label for="selecteduser">user selector</label>
+				<input type="text" class="form-control input-sm" id="selecteduser" placeholder="username" autocomplete="on" list="users3">
+					<datalist id="users3">
+					{{#each realusers}}
+	        			{{> itemuser}}
+	      			{{/each}}
+					{{#each virtualusers}}
+	        			{{> itemuser}}
+	      			{{/each}}
+					</datalist>
+			</div>
 		</div>
+		{{/if}}
 	</div>
-	{{/if}}
-	<div class="col-sm-12">abcdefg</div>
+	<!-- プロジェクトリスト -->
+	<div class="row projectlist">
+		{{#each projects}}
+			{{> project}}
+		{{/each}}
+	</div>
 
+</template>
+
+<template name="project">
+	<div class="project col-md-12" id="{{_id}}">
+		<div class="row">
+			<div class="project_head col-md-2">
+				<p>{{nm}}</p>
+				<button>open/close</button>
+			</div>
+			<ul class="task_list col-md-9 list-inline">
+				{{#each tasks}}
+					{{> task}}
+				{{/each}}
+			</ul>
+		</div>
+	</div>
+</template>
+
+<template name="task">
+	<li class="task list-group-item" id="{{_id}}">
+		<ul>
+		<li class="title">{{ti}}</li>
+		<li class="assignee">{{formatname}}</li>
+		<li class="deadline">{{formatdeadline}}</li>
+		</ul>
+	</li>
 </template>
 
