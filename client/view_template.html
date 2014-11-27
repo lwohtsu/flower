@@ -37,11 +37,11 @@
 <template name="project">
 	<div class="project col-md-12" id="{{_id}}">
 		<div class="row">
-			<div class="project_head col-md-2">
+			<div class="project-head">
 				<p>{{nm}}</p>
 				<button>open/close</button>
 			</div>
-			<ul class="task_list col-md-9 list-inline">
+			<ul class="task-list list-inline">
 				{{#each tasks}}
 					{{> task}}
 				{{/each}}
@@ -53,9 +53,9 @@
 <template name="task">
 	<li class="task list-group-item" id="{{_id}}">
 		<ul>
-		<li class="title">{{ti}}</li>
-		<li class="assignee">{{formatname}}</li>
-		<li class="deadline">{{formatdeadline}}</li>
+		<li class="task-title">{{ti}}</li>
+		<li class="task-assignee"><span class="glyphicon glyphicon-user"></span>{{formatname}}</li>
+		<li class="task-deadline"><span class="glyphicon glyphicon-time"></span>{{formatdeadline}}</li>
 		</ul>
 	</li>
 </template>

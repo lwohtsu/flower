@@ -33,3 +33,19 @@ form .list-group-item{
 .project:nth-child(odd){
 	background: #ffe;
 }
+.project-head{
+	margin-left: 18px;
+	float:left;
+	width: 240px;
+}
+
+.task{
+	max-width: 120px;
+	font-size: 12px;
+}
+.task ul{
+	list-style-type: none;
+	padding: 0;
+}
+.task-assignee{color:#888;}
+.task-deadline{color:#888;}

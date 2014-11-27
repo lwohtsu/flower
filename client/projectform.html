@@ -3,17 +3,21 @@
 <div class=" panel panel-default">
 	<div class="panel-heading">Project Info</div>
 	<div class="panel-body">
+{{#with currentproject}}
 		<form role="form">
 			<!-- プロジェクト名 -->
 			<div class="form-group">
 				<label for="projectname"  class="sr-only">project name</label>
-				<input type="text" class="form-control input-sm" id="projectname" placeholder="projectname">
+				<input type="text" class="form-control input-sm" id="projectname" placeholder="projectname" value="{{nm}}">
 			</div>	
 			<!-- 参加ユーザー -->
 			<div class="form-group">
 			<label for="projectuser" class="sr-only">team member</label>
 			<ul class="list-inline">
-				{{> projectuser}}
+				<span class="glyphicon glyphicon-user"></span>
+				{{#each member}}
+					{{> projectuser}}
+				{{/each}}
 				<!-- 新規ユーザー入力（オートコンプリートあり） -->
 				<input type="text" class="form-control input-sm" id="projectuser" placeholder="team member" autocomplete="on" list="users2">
 				<datalist id="users2">
@@ -46,6 +50,7 @@
 				</div>
 			</div>
 		</form>
+{{/with}}
 
 		<hr/>
 		<!-- プロジェクト操作（新規作成） -->
@@ -58,7 +63,7 @@
 
 <!-- プロジェクトフォームの参加ユーザーリスト -->
 <template name="projectuser">
-	<li class="list-group-item">username
+	<li class="list-group-item" id="{{_id}}">{{username}}
 	<button type="button" class="close del-item"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 	</li>
 </template>

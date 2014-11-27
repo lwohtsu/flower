@@ -3,17 +3,18 @@
 <div class=" panel panel-default">
 	<div class="panel-heading">Task Info</div>
 	<div class="panel-body">
+{{#with currenttask}}
 		<form role="form">
 			<!-- タスクのタイトル -->
 			<div class="form-group">
 				<label for="tasktitle" class="sr-only">task title</label>
-				<input type="text" class="form-control input-sm" id="tasktitle" placeholder="task title">
+				<input type="text" class="form-control input-sm" id="tasktitle" placeholder="task title" value="{{ti}}">
 			</div>	
 			<div class="row">
 				<!-- タスクの担当者 -->
 				<div class="form-group col-sm-4">
 					<label for="tsk_assignee" class="sr-only">assigned user</label>
-					<input type="text" class="form-control input-sm" id="tsk_assignee" placeholder="username" autocomplete="on" list="users1">
+					<input type="text" class="form-control input-sm" id="tsk_assignee" placeholder="username" autocomplete="on" list="users1" value="{{formatname}}">
 					<datalist id="users1">
 					{{#each realusers}}
 	        			{{> itemuser}}
@@ -26,7 +27,7 @@
 				<!-- デッドライン（〆切り） -->
 				<div class="form-group col-sm-4">
 					<label for="tsk_deadline" class="sr-only">deadline</label>
-					<input type="date" class="form-control input-sm" id="tsk_deadline">
+					<input type="date" class="form-control input-sm" id="tsk_deadline" value="{{formatdeadline}}">
 				</div>
 				<!-- タスククローズ -->
 				<div class="checkbox col-sm-2">
@@ -67,11 +68,11 @@
 			<div class="list-inline">
 				<!-- タスク追加 -->
 				<button type="button" class="btn btn-success" id="btn_addtask">
-					<span class="glyphicon glyphicon-arrow-right"></span>add next
+					<span class="glyphicon glyphicon-hand-right"></span>add next
 				</button>
 				<!-- タスク分岐 -->
 				<button type="button" class="btn btn-warning" id="btn_addtask">
-					<span class="glyphicon glyphicon-arrow-down"></span>branch
+					<span class="glyphicon glyphicon-hand-down"></span>branch
 				</button>
 				<!-- タスク削除 -->
 				<button type="button" class="btn btn-xs btn-danger pull-right" id="btn_deltask">
@@ -80,6 +81,7 @@
 			</div>
 
 		</form>
+{{/with}}
 	</div>
 </div>
 </template>
