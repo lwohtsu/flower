@@ -12,14 +12,14 @@
 			</div>	
 			<!-- 参加ユーザー -->
 			<div class="form-group">
-			<label for="projectuser" class="sr-only">team member</label>
+			<label for="projectusers" class="sr-only">team member</label>
 			<ul class="list-inline">
 				<span class="glyphicon glyphicon-user"></span>
 				{{#each member}}
 					{{> projectuser}}
 				{{/each}}
 				<!-- 新規ユーザー入力（オートコンプリートあり） -->
-				<input type="text" class="form-control input-sm" id="projectuser" placeholder="team member" autocomplete="on" list="users2">
+				<input type="text" class="form-control input-sm" id="projectusers" placeholder="team member" autocomplete="on" list="users2">
 				<datalist id="users2">
 				{{#each realusers}}
         			{{> itemuser}}

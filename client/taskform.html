@@ -14,8 +14,8 @@
 				<!-- タスクの担当者 -->
 				<div class="form-group col-sm-4">
 					<label for="tsk_assignee" class="sr-only">assigned user</label>
-					<input type="text" class="form-control input-sm" id="tsk_assignee" placeholder="username" autocomplete="on" list="users1" value="{{formatname}}">
-					<datalist id="users1">
+					<input type="text" class="form-control input-sm" id="tsk_assignee" placeholder="username" autocomplete="on" list="users1" value="{{formatname}}" aria-describedby="taskuser-error-status">
+  					<datalist id="users1">
 					{{#each realusers}}
 	        			{{> itemuser}}
 	      			{{/each}}
@@ -27,7 +27,8 @@
 				<!-- デッドライン（〆切り） -->
 				<div class="form-group col-sm-4">
 					<label for="tsk_deadline" class="sr-only">deadline</label>
-					<input type="date" class="form-control input-sm" id="tsk_deadline" value="{{formatdeadline}}">
+					<input type="date" class="form-control input-sm" id="tsk_deadline" 
+					value="{{formatdeadline}}">
 				</div>
 				<!-- タスククローズ -->
 				<div class="checkbox col-sm-2">

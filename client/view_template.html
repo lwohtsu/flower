@@ -1,10 +1,13 @@
 <template name="projectview">
-	<div class="row">
+	<div class="row rowtimeline">
 		<!-- 表示月選択 -->
+		<div id="timeline">
+			<canvas id="cvs_timeline">canvas</canvas>
+		</div>
 		<div id="monthselector" class="col-sm-3">
 			<div class="form-group">
 				<label for="viewmonth">view month</label>
-				<input type="month" class="form-control input-sm" id="viewmonth">
+				<input type="month" class="form-control input-sm" id="viewmonth" value="{{viewmonth}}">
 			</div>
 		</div>
 		<!-- ユーザー選択（オートコンプリートあり） 。ユーザービューのときのみ表示-->
@@ -38,8 +41,8 @@
 	<div class="project col-md-12" id="{{_id}}">
 		<div class="row">
 			<div class="project-head">
-				<p>{{nm}}</p>
-				<button>open/close</button>
+				<p class="projectname">{{nm}}</p>
+				<button>collapse</button>
 			</div>
 			<ul class="task-list list-inline">
 				{{#each tasks}}

@@ -6,6 +6,8 @@ h1.navbar-brand{margin:0 !important;}
 	max-height: 32px;
 }*/
 
+.navbar{border-radius: 0;}
+
 form .list-group-item{
 	font-size:0.8em;
 	line-height: 0.8em;
@@ -26,6 +28,8 @@ form .list-group-item{
 .project{
 	border-bottom: 1px #BBB solid;
 }
+.project p{cursor:default;}
+.project li{cursor: default;}
 
 .project:nth-child(even){
 	background: #eff;
@@ -39,6 +43,21 @@ form .list-group-item{
 	width: 240px;
 }
 
+.rowtimeline{
+	position: relative;
+}
+#monthselector{
+	width: 240px;
+}
+#cvs_timeline{
+	/*border: solid 1px;*/
+	position: absolute;
+	left: 0px;
+	float:left;
+	width: 100%;
+	height: 60px;
+}
+
 .task{
 	max-width: 120px;
 	font-size: 12px;
@@ -47,5 +66,17 @@ form .list-group-item{
 	list-style-type: none;
 	padding: 0;
 }
+.task-list{
+	position: relative;
+}
 .task-assignee{color:#888;}
 .task-deadline{color:#888;}
+
+.selectedtask{
+	/*box-shadow: 0px 0px 4px 0 #0ef;*/
+	border: solid 1px #08d !important;
+}
+
+.selectedproject .projectname{
+	text-decoration: underline;
+}

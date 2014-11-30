@@ -5,6 +5,7 @@ Accounts.ui.config({
 Session.set('taskquery', 'open');
 Session.set('selectedproject', null);
 Session.set('selectedtask', null);
+Session.set('viewmonth', new Date());
 
 //バーチャルズは架空のユーザー。プロジェクト管理に参加しないユーザーやクライアントを表す
 Projects = new Mongo.Collection("projects");
@@ -13,6 +14,8 @@ Virtuals = new Mongo.Collection('virtuals');
 Meteor.subscribe("projects");
 Meteor.subscribe("tasks");
 Meteor.subscribe("virtuals");
+
+
 
 //body内のヘルパー
 Template.body.helpers({
@@ -80,8 +83,17 @@ Template.projectview.helpers({
   projects: function(){
     return Projects.find({});
   },
-
+  //表示月
+  viewmonth: function(){
+    var viewmonth = Session.get('viewmonth');
+    return viewmonth.getFullYear() +'-'
+        + parseDate(viewmonth.getMonth()+1);
+    }
 });
+function parseDate(num) {
+  return ((num + "").length == 1) ? "0" + num : num;
+}
+
 
 //プロジェクトビューのイベント
 Template.projectview.events({
@@ -93,6 +105,9 @@ Template.projectview.events({
     }
     // console.log('taskid:' + target.attr('id'));
     Session.set('selectedtask', target.attr('id'));
+    //選択強調
+    $('.selectedtask').removeClass('selectedtask');
+    target.addClass('selectedtask');
   },
   //プロジェクトがクリックされた
   'click .project': function(){
@@ -100,6 +115,9 @@ Template.projectview.events({
     target = target.parents('.project');
     // console.log('prjid:' + target.attr('id'));
     Session.set('selectedproject', target.attr('id'));
+    //選択強調
+    $('.selectedproject').removeClass('selectedproject');
+    target.addClass('selectedproject');
   },
 });
 
@@ -123,58 +141,4 @@ Template.task.helpers({
   }
 });
 
-//プロジェクトフォームのイベント
-Template.projectform.events({
-  //新規プロジェクト追加
-  'click #btn_newproj': function () {
-    Meteor.call('addNewProject');
-  }
-});
 
-//プロジェクトフォームのヘルパー
-Template.projectform.helpers({
-  //ユーザー一覧
-  realusers: function(){
-    return Meteor.users.find({});
-  },
-  //カレントプロジェクト
-  currentproject: function(){
-    var prid = Session.get('selectedproject');
-    // console.log(prid);
-    if(prid){
-      return Projects.findOne({'_id': prid});
-    } else 
-    return null;
-  },
-  //参加ユーザーの一覧
-  member: function(){
-    return Meteor.users.find({'_id': {$in: this.urs}});
-  }
-});
-//タスクフォームのヘルパー
-Template.taskform.helpers({
-  //ユーザー一覧
-  realusers: function(){
-    return Meteor.users.find({});
-  },
-  virtualusers: function(){
-    return Virtuals.find({});
-  },
-  //カレントプロジェクト
-  currenttask: function(){
-    var tkid = Session.get('selectedtask');
-    // console.log(tkid);
-    if(tkid){
-      return Tasks.findOne({'_id': tkid});
-    } else 
-    return null;
-  },
-  //整形した締め切り日を返す
-  formatdeadline: function(){
-    return this.dl.getFullYear() +'-'+ (this.dl.getMonth()+1) + '-' + this.dl.getDate();
-  },
-  //整形したユーザー名を返す
-  formatname: function(){
-    return Meteor.users.findOne({'_id': this.us}).username;
-  },    
-});
