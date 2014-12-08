@@ -6,7 +6,7 @@ h1.navbar-brand{margin:0 !important;}
 	max-height: 32px;
 }*/
 
-.navbar{border-radius: 0;}
+.navbar{border-radius: 0 !important;}
 
 form .list-group-item{
 	font-size:0.8em;
@@ -21,60 +21,126 @@ form .list-group-item{
 	margin-left:0.5em;
 }
 
+/*#consolearea{
+	position: fixed;
+	bottom: 0px;
+}*/
+
+/*タイムライン*/
 .form-group{
 	margin-bottom: 8px;
 }
 
+.rowtimeline{
+	position: relative;
+	height: 72px;
+}
+#monthselector{
+	position: absolute;
+	left: 15px;
+	width: 240px;
+}
+#userselector{
+	position: absolute;
+	left: 270px;
+	width: 240px;
+}
+#timeline{
+	position: relative;
+	left: 0px;
+}
+#cvs_timeline{
+	position: absolute;
+	left:258px;
+}
+#btn_leftshift{
+	position: absolute;
+	left: 160px;
+}
+#btn_rightshift{
+	position: absolute;
+	left: 208px;
+}
+
+/*プロジェクト*/
+.projectlist{
+	position: relative;
+}
+
 .project{
 	border-bottom: 1px #BBB solid;
+	min-height: 60px;
+	position: relative;
+	overflow: hidden;
 }
 .project p{cursor:default;}
 .project li{cursor: default;}
 
 .project:nth-child(even){
-	background: #eff;
+	background: #dff;
 }
 .project:nth-child(odd){
-	background: #ffe;
+	background: #ffd;
 }
 .project-head{
+	position: absolute;
+	left:0;
 	margin-left: 18px;
-	float:left;
 	width: 240px;
+	background: #E5A238; /*rgba(255, 255, 255, 0.7);*/
+	border: solid 2px #DDD;
+	border-top: none;
+	border-bottom-right-radius: 8px;
+	border-bottom-left-radius: 8px;
+	padding: 4px;
+}
+/*.project-head p{
+	background: #fff;
+}*/
+.project-cvs{
+	position: absolute;
+	left:0;
+	top:0;
 }
 
-.rowtimeline{
+.taskholder{
+	width: 100%;
 	position: relative;
 }
-#monthselector{
-	width: 240px;
-}
-#cvs_timeline{
-	/*border: solid 1px;*/
+.task-list{
 	position: absolute;
-	left: 0px;
-	float:left;
-	width: 100%;
-	height: 60px;
+	left: 258px;
+	list-style-type: none;
+	padding: 0;
 }
 
+/*タスク*/
 .task{
-	max-width: 120px;
-	font-size: 12px;
+	width: 60px;
+	font-size: 10px;
+	border-radius: 0 !important;
+	border-right: solid 1px #484;
+	box-sizing: border-box;
+	background: #fff;
+	position: absolute;
+	padding: 4px;
+	left:0px;
 }
 .task ul{
 	list-style-type: none;
 	padding: 0;
 }
-.task-list{
-	position: relative;
+.task li{
+	white-space: pre;
 }
+
 .task-assignee{color:#888;}
 .task-deadline{color:#888;}
 
 .selectedtask{
 	/*box-shadow: 0px 0px 4px 0 #0ef;*/
-	border: solid 1px #08d !important;
+	border: dashed 1px #08d !important;
+	border-right: solid 2px #4F4 !important;
 }
 
 .selectedproject .projectname{

@@ -1,18 +1,21 @@
 <template name="projectview">
-	<div class="row rowtimeline">
+	<div class="rowtimeline">
 		<!-- 表示月選択 -->
 		<div id="timeline">
-			<canvas id="cvs_timeline">canvas</canvas>
+			<canvas id="cvs_timeline" height="60">canvas</canvas>
 		</div>
-		<div id="monthselector" class="col-sm-3">
+		<div id="monthselector">
 			<div class="form-group">
 				<label for="viewmonth">view month</label>
-				<input type="month" class="form-control input-sm" id="viewmonth" value="{{viewmonth}}">
+				<input type="date" class="form-control input-sm" id="viewmonth" value="{{viewmonth}}">
 			</div>
 		</div>
+		<!-- 移動ボタン -->
+		<button type="button" id="btn_leftshift" class="btn btn-default btn-xs">7<span class="glyphicon glyphicon-chevron-left"></span><span class="sr-only">shift left</span></button>
+		<button type="button" id="btn_rightshift" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-chevron-right"></span>7<span class="sr-only">Close</span></button>
 		<!-- ユーザー選択（オートコンプリートあり） 。ユーザービューのときのみ表示-->
 		{{#if userview}}
-		<div id="userselector" class="col-sm-3">
+		<div id="userselector">
 			<div class="form-group">
 				<label for="selecteduser">user selector</label>
 				<input type="text" class="form-control input-sm" id="selecteduser" placeholder="username" autocomplete="on" list="users3">
@@ -29,7 +32,7 @@
 		{{/if}}
 	</div>
 	<!-- プロジェクトリスト -->
-	<div class="row projectlist">
+	<div class="projectlist">
 		{{#each projects}}
 			{{> project}}
 		{{/each}}
@@ -38,23 +41,25 @@
 </template>
 
 <template name="project">
-	<div class="project col-md-12" id="{{_id}}">
-		<div class="row">
-			<div class="project-head">
-				<p class="projectname">{{nm}}</p>
-				<button>collapse</button>
-			</div>
-			<ul class="task-list list-inline">
+	<div class="project" id="{{_id}}">
+		<canvas class="project-cvs"></canvas>
+		<div class="taskholder">
+			<ul class="task-list">
 				{{#each tasks}}
 					{{> task}}
 				{{/each}}
 			</ul>
 		</div>
+		<div class="project-head">
+			<p class="projectname">{{nm}}</p>
+			<!-- <button>collapse</button> -->
+		</div>
 	</div>
 </template>
 
 <template name="task">
-	<li class="task list-group-item" id="{{_id}}">
+	<li class="task" id="{{_id}}" style="left:{{taskxpos}}px; top: {{taskypos}}px">
+		<!-- 	data-deadline="{{milideadline}}" -->
 		<ul>
 		<li class="task-title">{{ti}}</li>
 		<li class="task-assignee"><span class="glyphicon glyphicon-user"></span>{{formatname}}</li>

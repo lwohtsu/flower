@@ -5,6 +5,14 @@ Template.projectform.events({
     Meteor.call('addNewProject');
     return false;
   },
+  //プロジェクト削除
+  'click #btn_delproj': function(event){
+    var projectid = this._id;
+    bootbox.confirm("Delete this Project?", function(result) {
+      Meteor.call('deleteProject', projectid);
+    }); 
+    return false;
+  },
   //プロジェクト名変更
   'change #projectname': function(event) {
     // console.log(this._id + ' projectname as "' + $(event.target).val());
@@ -20,13 +28,48 @@ Template.projectform.events({
 Template.taskform.events({
   //新規タスクの追加
   'click #btn_addtask' : function(event){
-    Meteor.call('addNewTask', this.prid, this._id, this.mbr);
+    var prid = this.prid;
+    Meteor.call('addNewTask', this.prid, this._id, this.mbr, this.dl,
+      function(error, result){
+        //新規タスクを選択した状態にする
+        var target = $('#'+result);
+        Session.set('selectedtask', result);
+        //選択強調
+        $('.selectedtask').removeClass('selectedtask');
+        target.addClass('selectedtask');
+        // TODO：ブランチの配置を調整し、行高調整して背景の線をリドローする
+        updateProjectArea(prid, Tasks);
+      });
+    return false;
+  },
+  //ブランチを分けてタスクを追加
+  'click #btn_addbranch': function(event){
+    var brpos = this.brpos;
+    //親がbrposを持たないなら1に、持っているなら+1する
+    if(!this.brpos) brpos = 1; else brpos++;
+    var prid = this.prid;
+
+    Meteor.call('addNewTaskWithBranch', this.prid, this._id, this.dl, this.brpos,
+      function(error, result){
+        //新規タスクを選択した状態にする
+        var target = $('#'+result);
+        Session.set('selectedtask', result);
+        //選択強調
+        $('.selectedtask').removeClass('selectedtask');
+        target.addClass('selectedtask');
+        // TODO：ブランチの配置を調整し、行高調整して背景の線をリドローする
+        updateProjectArea(prid, Tasks);
+      });
     return false;
   },
   //タスクの削除
   'click #btn_deltask': function(event){
     if(Tasks.find({'prid': this.prid}).count()<=1) return false;
-    Meteor.call('deleteTask', this._id);
+    var prid = this.prid;
+    Meteor.call('deleteTask', this._id, function(error, result){
+      // TODO：ブランチの配置を調整し、行高調整して背景の線をリドローする
+      updateProjectArea(prid, Tasks);      
+    });
     return false;
   },
   //タスクタイトルの更新
@@ -54,7 +97,12 @@ Template.taskform.events({
   },
   //デッドラインの更新
   'change #tsk_deadline': function(event){
-      Meteor.call('updateTaskDeadline', this._id, new Date($(event.target).val()));
+      var val = new Date($(event.target).val());
+      var prid = this.prid;
+      Meteor.call('updateTaskDeadline', this._id, val, function(error, result){
+        // TODO：ブランチの配置を調整し、行高調整して背景の線をリドローする
+        updateProjectArea(prid, Tasks);      
+      });
       return false;
   },
   //enterによるsubmitをすべて無効に
@@ -62,6 +110,20 @@ Template.taskform.events({
     return false;
   }
 });
+//日付変更時にタスクを動かす（値の変更ではリアクションが起きないみたい）
+// var ONEDAYMILI = 24*60*60*1000;
+// function AdjustTask(id, x){
+//   console.log('modify task');
+//   var viewmonth = Session.get('viewmonth');
+//   var dayspan = Session.get('dayspan');
+//   var startdate = Math.round(viewmonth.getTime() / ONEDAYMILI);
+//   var elem = $('#'+id);
+//   console.log(elem);
+//   console.log(x);
+//   var w = elem.outerWidth();
+//   elem.css('left', ((x - startdate)*dayspan) - w + 'px');  
+// }
+
 
 //プロジェクトフォームのヘルパー
 Template.projectform.helpers({
@@ -113,6 +175,3 @@ Template.taskform.helpers({
   },
 });
 
-function parseDate(num) {
-  return ((num + "").length == 1) ? "0" + num : num;
-}
