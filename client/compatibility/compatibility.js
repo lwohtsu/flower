@@ -1,3 +1,7 @@
+/*comatibilitiy.js
+クライアントの共通コードを記述する。client/compatibilityフォルダに入れる必要あり。
+*/
+
 //タイムライン更新用定数
 var HEADWIDTH = 240+18;
 var ONEDAYMILI = 24*60*60*1000;
@@ -64,7 +68,7 @@ function updateProjectArea(projid, tasks){
 	 }
 	//接続線の描画
 	// console.log(lineary);
-	ctx.lineWidth = 1;
+	ctx.lineWidth = 3;
 	var viewmonth = Session.get('viewmonth');
 	var dayspan = Session.get('dayspan');
 	var startdate = Math.round(viewmonth.getTime() / ONEDAYMILI);
@@ -72,11 +76,16 @@ function updateProjectArea(projid, tasks){
 		//始点終点の座標計算
 		var sy = taskary[lineary[i].start].brpos * 60 + 24;
 		var sx = Math.round(taskary[lineary[i].start].dl.getTime()/ONEDAYMILI);
+		if(taskary[lineary[i].start].span){
+			sx -= taskary[lineary[i].start].span;
+		} else {
+			sx -= 1;
+		}
 		var ex = Math.round(taskary[lineary[i].end].dl.getTime()/ONEDAYMILI);
 		if(lineary[i].connection=='-'){
 			//子タスクとの接続
 			// console.log('sx:'+(sx - startdate + 1)+' ex:'+(ex - startdate + 1));
-			ctx.strokeStyle = '#4a4';
+			ctx.strokeStyle = '#86CE86';
 			ctx.beginPath();
 			ctx.moveTo((sx - startdate + 1)*dayspan + HEADWIDTH, sy);
 			ctx.lineTo((ex - startdate + 1)*dayspan + HEADWIDTH, sy);
@@ -88,9 +97,9 @@ function updateProjectArea(projid, tasks){
 			// console.log('sx:'+(sx - startdate + 1) + ' sy:'+sy);
 			// console.log('ex:'+(ex - startdate + 1) + ' ey:'+ey);
 			ctx.beginPath();
-			ctx.moveTo((sx - startdate + 1)*dayspan + HEADWIDTH-30, sy);
-			ctx.lineTo((sx - startdate + 1)*dayspan + HEADWIDTH-30, ey);
-			ctx.lineTo((ex - startdate + 1)*dayspan + HEADWIDTH-30, ey);
+			ctx.moveTo((sx - startdate + 1)*dayspan + HEADWIDTH+dayspan/2, sy);
+			ctx.lineTo((sx - startdate + 1)*dayspan + HEADWIDTH+dayspan/2, ey);
+			ctx.lineTo((ex - startdate + 1)*dayspan + HEADWIDTH, ey);
 			ctx.stroke(); 
 		}
 	}

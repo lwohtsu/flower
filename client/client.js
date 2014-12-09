@@ -1,3 +1,7 @@
+/*client.js
+クライアント用コード。ビューに関するもの中心。
+*/
+
 //初期設定
 Accounts.ui.config({
   passwordSignupFields: "USERNAME_ONLY"
@@ -100,7 +104,7 @@ function updateTimeline(){
   $('nav').width(width);//+HEADWIDTH);
   //描画
   var ctx = cvs.get(0).getContext('2d');
-  ctx.strokeStyle = '#ddd';
+  ctx.strokeStyle = '#aaa';
   ctx.lineWidth = 1;
   ctx.font = '30px  Arial';
   ctx.fillStyle = '#aaa';
@@ -141,7 +145,7 @@ function updateTimeline(){
   ctx.stroke();  
   ctx.fillStyle = '#68f';
   ctx.font = '14px  Arial';
-  ctx.fillText('today', todayval-16, 44);
+  ctx.fillText('today', todayval+12, 54);
 }
 
 //プロジェクトビューのイベント
@@ -230,9 +234,11 @@ Template.task.helpers({
     var dayspan = Session.get('dayspan');
     var startdate = Math.round(viewmonth.getTime() / ONEDAYMILI);
     var x = Math.round(this.dl.getTime()/ONEDAYMILI)
-    var w = $('#'+this._id).outerWidth();
-    if(!w) w = 60;
-    return (x - startdate + 1)*dayspan - w;
+    if(this.span){
+      return (x - startdate + 1)*dayspan - this.span * dayspan;
+    } else {
+      return (x - startdate + 1)*dayspan - dayspan;
+    }
   },
   //タスクのブランチ位置を返す
   taskypos: function(){
@@ -240,6 +246,15 @@ Template.task.helpers({
       return this.brpos * 60;
     } else {
       return 0;
+    }
+  },
+  //タスクの幅を返す
+  taskw: function(){
+    var dayspan = Session.get('dayspan');
+    if(this.span){
+      return this.span * dayspan;
+    } else {
+      return dayspan;
     }
   }
 });

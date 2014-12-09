@@ -1,3 +1,7 @@
+/*client_form.js
+クライアント用コード。フォームに関するもの中心。
+*/
+
 //プロジェクトフォームのイベント
 Template.projectform.events({
   //新規プロジェクト追加
@@ -105,6 +109,16 @@ Template.taskform.events({
       });
       return false;
   },
+  //幅の更新
+  'change #tsk_span': function(event){
+      var prid = this.prid;
+      Meteor.call('updateTaskSpan', this._id, $(event.target).val(),
+       function(error, result){
+          // TODO：ブランチの配置を調整し、行高調整して背景の線をリドローする
+          updateProjectArea(prid, Tasks);      
+      });
+      return false;
+  },
   //enterによるsubmitをすべて無効に
   'submit': function(event){
     return false;
@@ -173,5 +187,9 @@ Template.taskform.helpers({
         + parseDate(this.dl.getMonth()+1) + '-' 
         + parseDate(this.dl.getDate());
   },
+  //幅
+  spandate: function(){
+    return this.span;
+  }
 });
 

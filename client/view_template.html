@@ -13,6 +13,8 @@
 		<!-- 移動ボタン -->
 		<button type="button" id="btn_leftshift" class="btn btn-default btn-xs">7<span class="glyphicon glyphicon-chevron-left"></span><span class="sr-only">shift left</span></button>
 		<button type="button" id="btn_rightshift" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-chevron-right"></span>7<span class="sr-only">Close</span></button>
+		<!-- ズームボタン -->
+		<button type="button" id="btn_zoom" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-resize-small"></span><span class="sr-only">zoom</span></button>
 		<!-- ユーザー選択（オートコンプリートあり） 。ユーザービューのときのみ表示-->
 		{{#if userview}}
 		<div id="userselector">
@@ -58,7 +60,7 @@
 </template>
 
 <template name="task">
-	<li class="task" id="{{_id}}" style="left:{{taskxpos}}px; top: {{taskypos}}px">
+	<li class="task" id="{{_id}}" style="left:{{taskxpos}}px; top: {{taskypos}}px; width: {{taskw}}px;">
 		<!-- 	data-deadline="{{milideadline}}" -->
 		<ul>
 		<li class="task-title">{{ti}}</li>

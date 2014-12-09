@@ -176,7 +176,12 @@ Meteor.methods({
 		//セキュリティチェック
 		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
 		Tasks.update({_id: tid}, {$set: {brpos: brpos}});
-	}
+	},
+	updateTaskSpan: function(tid, span){
+		//セキュリティチェック
+		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
+		Tasks.update({_id: tid}, {$set: {span: span}});
+	},
 });
 
 //すべての子とブランチの締め切り日をずらす
