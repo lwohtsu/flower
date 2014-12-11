@@ -12,8 +12,10 @@ Template.projectform.events({
   //プロジェクト削除
   'click #btn_delproj': function(event){
     var projectid = this._id;
-    bootbox.confirm("Delete this Project?", function(result) {
-      Meteor.call('deleteProject', projectid);
+    bootbox.confirm("Delete '" + this.nm + "'' Project?", function(result) {
+      if(result){
+        Meteor.call('deleteProject', projectid);
+      }
     }); 
     return false;
   },
@@ -42,7 +44,7 @@ Template.taskform.events({
         $('.selectedtask').removeClass('selectedtask');
         target.addClass('selectedtask');
         // TODO：ブランチの配置を調整し、行高調整して背景の線をリドローする
-        updateProjectArea(prid, Tasks);
+        // updateProjectArea(prid, Tasks);
       });
     return false;
   },
@@ -62,7 +64,7 @@ Template.taskform.events({
         $('.selectedtask').removeClass('selectedtask');
         target.addClass('selectedtask');
         // TODO：ブランチの配置を調整し、行高調整して背景の線をリドローする
-        updateProjectArea(prid, Tasks);
+        // updateProjectArea(prid, Tasks);
       });
     return false;
   },
@@ -70,10 +72,11 @@ Template.taskform.events({
   'click #btn_deltask': function(event){
     if(Tasks.find({'prid': this.prid}).count()<=1) return false;
     var prid = this.prid;
-    Meteor.call('deleteTask', this._id, function(error, result){
-      // TODO：ブランチの配置を調整し、行高調整して背景の線をリドローする
-      updateProjectArea(prid, Tasks);      
-    });
+    Meteor.call('deleteTask', this._id);
+    // , function(error, result){
+    //   // TODO：ブランチの配置を調整し、行高調整して背景の線をリドローする
+    //   updateProjectArea(prid, Tasks);      
+    // });
     return false;
   },
   //タスクタイトルの更新
@@ -103,21 +106,28 @@ Template.taskform.events({
   'change #tsk_deadline': function(event){
       var val = new Date($(event.target).val());
       var prid = this.prid;
-      Meteor.call('updateTaskDeadline', this._id, val, function(error, result){
-        // TODO：ブランチの配置を調整し、行高調整して背景の線をリドローする
-        updateProjectArea(prid, Tasks);      
-      });
+      Meteor.call('updateTaskDeadline', this._id, val, true);
+      // , function(error, result){
+      //   // TODO：ブランチの配置を調整し、行高調整して背景の線をリドローする
+      //   updateProjectArea(prid, Tasks);      
+      // });
       return false;
   },
   //幅の更新
   'change #tsk_span': function(event){
       var prid = this.prid;
-      Meteor.call('updateTaskSpan', this._id, $(event.target).val(),
-       function(error, result){
-          // TODO：ブランチの配置を調整し、行高調整して背景の線をリドローする
-          updateProjectArea(prid, Tasks);      
-      });
+      Meteor.call('updateTaskSpan', this._id, $(event.target).val());
+      // ,
+      //  function(error, result){
+      //     // TODO：ブランチの配置を調整し、行高調整して背景の線をリドローする
+      //     updateProjectArea(prid, Tasks);      
+      // });
       return false;
+  },
+  //ステータス変更
+  'click input[name="taskStatusRadio"]': function(event){
+    Meteor.call('updateTaskStatus', this._id, $(event.target).val());
+    return true;
   },
   //enterによるsubmitをすべて無効に
   'submit': function(event){
@@ -190,6 +200,64 @@ Template.taskform.helpers({
   //幅
   spandate: function(){
     return this.span;
-  }
+  },
+  //ステータス
+  statuschecked1: function(){
+    if(!this.stus) return 'checked';
+    if(this.stus == '0') return 'checked';
+    return null;
+  },
+  statuschecked2: function(){
+    if(this.stus) if(this.stus == '50') return 'checked';
+    return null;
+  },
+  statuschecked3: function(){
+    if(this.stus) if(this.stus == '100') return 'checked';
+    return null;
+  },
+  statuschecked4: function(){
+    if(this.stus) if(this.stus == '-1') return 'checked';
+    return null;
+  },
 });
 
+// マンスフォーム（表示月の変更など）
+Template.monthform.helpers({
+  //表示月
+  viewmonth: function(){
+    var viewmonth = Session.get('viewmonth');
+    return viewmonth.getFullYear() +'-'
+        + parseDate(viewmonth.getMonth()+1) + '-' + parseDate(viewmonth.getDate());
+  }
+});
+Template.monthform.events({
+  //表示日が変更された
+  'change #viewmonth': function(event){
+    var viewmonth = new Date($(event.target).val());
+    var day = viewmonth.getDay()-1;
+    if(day<0)day+=7;
+    viewmonth.setTime(viewmonth.getTime() - day*ONEDAYMILI);
+    viewmonth.setHours(9);
+    viewmonth.setMinutes(0);
+    viewmonth.setSeconds(0);
+    Session.set('viewmonth', viewmonth);
+    updateTimeline();
+    updateAllProjectArea(Tasks);
+  },
+  //ボタンによるシフト
+  'click #btn_leftshift': function(event){
+    var viewmonth = new Date($('#viewmonth').val());
+    viewmonth.setTime(viewmonth.getTime() - ONEDAYMILI * 7);
+    Session.set('viewmonth', viewmonth);    
+    updateTimeline();
+    updateAllProjectArea(Tasks);
+  },
+  //ボタンによるシフト
+  'click #btn_rightshift': function(event){
+    var viewmonth = new Date($('#viewmonth').val());
+    viewmonth.setTime(viewmonth.getTime() + ONEDAYMILI * 7);
+    Session.set('viewmonth', viewmonth);    
+    updateTimeline();
+    updateAllProjectArea(Tasks);
+  }
+});

@@ -9,6 +9,7 @@ Accounts.ui.config({
 Session.set('taskquery', 'open');
 Session.set('selectedproject', null);
 Session.set('selectedtask', null);
+
 //その週の月曜から開始するように調整
 var viewmonth = new Date();
 var day = viewmonth.getDay()-1;
@@ -18,8 +19,9 @@ viewmonth.setHours(9);
 viewmonth.setMinutes(0);
 viewmonth.setSeconds(0);
 Session.set('viewmonth', viewmonth);
-Session.set('dayspan', 60); //タイムライン1日＝40pxが初期値
-Session.set('timeoffset', -7);
+
+Session.set('dayspan', DAYSPAN_DEF); //タイムライン1日＝40pxが初期値
+Session.set('timelinedays', TIMELINEDAYS_DEF);  //初期値は29
 
 //バーチャルズは架空のユーザー。プロジェクト管理に参加しないユーザーやクライアントを表す
 Projects = new Mongo.Collection("projects");
@@ -28,7 +30,6 @@ Virtuals = new Mongo.Collection('virtuals');
 Meteor.subscribe("projects");
 Meteor.subscribe("tasks");
 Meteor.subscribe("virtuals");
-
 
 
 //body内のヘルパー
@@ -56,7 +57,8 @@ Template.body.events({
       $('.tab-content .active').removeClass('active');
       targetlink.parent('li').addClass('active');
       $('.tab-content ' + targetid).addClass('active');
-    }
+      return false;
+    },
 });
 
 //プロジェクトビューのヘルパー
@@ -77,81 +79,133 @@ Template.projectview.helpers({
   projects: function(){
     return Projects.find({});
   },
-  //表示月
-  viewmonth: function(){
-    var viewmonth = Session.get('viewmonth');
-    return viewmonth.getFullYear() +'-'
-        + parseDate(viewmonth.getMonth()+1) + '-' + parseDate(viewmonth.getDate());
-  }
 });
 
 //タイムラインの更新
 Template.projectview.rendered = function(){
   updateTimeline();
+  resizeAllArea();
+
+  //リサイズイベント
+  var resizetimer = null;
+  $(window).resize(function() {
+      Meteor.clearTimeout(resizetimer);
+      resizetimer = Meteor.setTimeout(function() {
+        resizeAllArea();
+        updateTimeline();
+        updateAllProjectArea(Tasks);
+      }, 500);
+  });
+
+  //スクロールイベント
+  var scrolltimer = null;
+  $('#listarea').scroll(function(event){
+    Meteor.clearTimeout(scrolltimer);
+    scrolltimer  = Meteor.setTimeout(function(){
+      var st = $('#listarea').scrollTop();
+      if(st > 20){
+        $('#cvs_timeline').css('top', st);
+        $('#btn_zoom').css('top', st);
+      } else {
+        $('#cvs_timeline').css('top', 0);
+        $('#btn_zoom').css('top', 0);
+      }
+      var sl = $('#listarea').scrollLeft();
+      console.log('sl:' + sl);
+    }, 500);
+  });
+
+  //ショートカットキーのイベント処理
+  $(document).keyup(function(event){
+    if($(':focus').prop("tagName") == 'INPUT') return;
+
+    // console.log('shortcut' + event.keyCode);
+    //タスク非選択時はタイムラインのスクロール
+    var viewmonth = new Date($('#viewmonth').val());
+    var seltaskid = Session.get('selectedtask');
+    if(seltaskid == null){
+      if(!event.ctrlKey && !event.altKey && !event.metaKey && !event.shiftKey){
+        switch(event.keyCode){
+          case 37:      //左へ
+            viewmonth.setTime(viewmonth.getTime() - ONEDAYMILI * 7);
+            Session.set('viewmonth', viewmonth);    
+            updateTimeline();
+            updateAllProjectArea(Tasks);
+            return false;          
+            break;
+          case 39:      //右へ
+            viewmonth.setTime(viewmonth.getTime() + ONEDAYMILI * 7);
+            Session.set('viewmonth', viewmonth);    
+            updateTimeline();
+            updateAllProjectArea(Tasks);
+            return false;
+            break;
+        }
+      }
+    } else {
+      //タスク選択時はタスクの操作
+      var task = Tasks.findOne({_id: seltaskid});
+      // console.log(task);
+      //修飾キーは何も押されていない
+      if(!event.ctrlKey && !event.altKey && !event.metaKey && !event.shiftKey){
+        switch(event.keyCode){
+          case 37: //左へタスクを移動（deadline変更）
+            task.dl.setTime(task.dl.getTime() - ONEDAYMILI);
+            // console.log(task.dl);
+            Meteor.call('updateTaskDeadline', task._id, task.dl, true);
+            return false;
+            break;
+          case 39: //右へタスクを移動（deadline変更）
+            task.dl.setTime(task.dl.getTime() + ONEDAYMILI);
+            Meteor.call('updateTaskDeadline', task._id, task.dl, true);
+            return false;
+            break;        
+        }
+      } else if(!event.ctrlKey && !event.altKey && !event.metaKey && event.shiftKey){
+        //shiftキーとカーソル左右の組み合わせのときは幅を変更
+        switch(event.keyCode){
+          case 37: //タスクの幅を拡げる
+            var w = task.span;
+            if(!w) w = 1;
+            w++;
+            Meteor.call('updateTaskSpan', task._id, w);            
+            return false;
+            break;
+          case 39: //右へタスクを移動（deadline変更）
+            var w = task.span;
+            if(!w) break;
+            if(w <= 1) break;
+            w--;
+            Meteor.call('updateTaskSpan', task._id, w);
+            return false;
+            break;          
+        }
+      } else if(!event.ctrlKey && event.altKey && !event.metaKey && !event.shiftKey){
+        //altキーとカーソル左右の組み合わせのときは1つのタスクのみ移動
+        switch(event.keyCode){
+          case 37: //左へタスクを移動（deadline変更）
+            task.dl.setTime(task.dl.getTime() - ONEDAYMILI);
+            Meteor.call('updateTaskDeadline', task._id, task.dl, false);
+            return false;
+            break;
+          case 39: //右へタスクを移動（deadline変更）
+            task.dl.setTime(task.dl.getTime() + ONEDAYMILI);
+            Meteor.call('updateTaskDeadline', task._id, task.dl, false);
+            return false;
+            break;        
+        }
+      }
+    }
+    return;
+  });
 };
 
-function updateTimeline(){
-  var viewmonth = Session.get('viewmonth');
-  var dayspan = Session.get('dayspan');
-  //キャンバスを取得
-  var cvs = $('#cvs_timeline');
-  var startday = 0; //7日前からタイムラインを開始する
-  //サイズ設定
-  var width = TIMELINEDAYS*dayspan;// - HEADWIDTH;
-  if(width>document.documentElement.clientWidth) width = document.documentElement.clientWidth;
-  cvs.get(0).width = width - HEADWIDTH;
-  cvs.get(0).height = 60;
-  $('nav').width(width);//+HEADWIDTH);
-  //描画
-  var ctx = cvs.get(0).getContext('2d');
-  ctx.strokeStyle = '#aaa';
-  ctx.lineWidth = 1;
-  ctx.font = '30px  Arial';
-  ctx.fillStyle = '#aaa';
-  //目盛りと日付を描画
-  for(var i=0; i<=TIMELINEDAYS; i++){
-    if(i%7==0){
-      //週頭の目盛り
-      ctx.beginPath();
-      ctx.moveTo(i*dayspan, 0);
-      ctx.lineTo(i*dayspan, 60);
-      ctx.stroke();
-      var date = new Date(viewmonth.getTime() + i*ONEDAYMILI);
-      ctx.fillText((date.getMonth()+1) + '/' + date.getDate(), i*dayspan, 30);
-      //console.log((date.getMonth()+1) + '/' + date.getDate());
-    } else {
-      //日の目盛り
-      ctx.beginPath();
-      ctx.moveTo(i*dayspan, 50);
-      ctx.lineTo(i*dayspan, 60);
-      ctx.stroke();      
-    }
-  }
-  //今日の日付
-  ctx.strokeStyle = '#68f';
-  var today = new Date();
-  today.setHours(9);
-  today.setMinutes(0);
-  today.setSeconds(0);  
-  // console.log('++' + today);
-  // console.log('++' + today.getTime());
-  var todayval = today.getTime() - viewmonth.getTime();
-  todayval /= (ONEDAYMILI);
-  todayval = Math.round(todayval) * dayspan;
-  // console.log('++' + todayval);
-  ctx.beginPath();
-  ctx.moveTo(todayval, 50);
-  ctx.lineTo(todayval, 60);
-  ctx.stroke();  
-  ctx.fillStyle = '#68f';
-  ctx.font = '14px  Arial';
-  ctx.fillText('today', todayval+12, 54);
-}
+
 
 //プロジェクトビューのイベント
 Template.projectview.events({
   //画面上のタスクがクリックされた
-  'click .task': function(){
+  'click .task': function(event){
     var target = $(event.target);
     if(!target.hasClass('task')){
       target = target.parents('.task');
@@ -163,7 +217,7 @@ Template.projectview.events({
     target.addClass('selectedtask');
   },
   //プロジェクトがクリックされた
-  'click .project': function(){
+  'click .project': function(event){
     var target = $(event.target);
     target = target.parents('.project');
     // console.log('prjid:' + target.attr('id'));
@@ -172,43 +226,63 @@ Template.projectview.events({
     $('.selectedproject').removeClass('selectedproject');
     target.addClass('selectedproject');
   },
-  //表示日が変更された
-  'change #viewmonth': function(){
-    var viewmonth = new Date($(event.target).val());
-    var day = viewmonth.getDay()-1;
-    if(day<0)day+=7;
-    viewmonth.setTime(viewmonth.getTime() - day*ONEDAYMILI);
-    viewmonth.setHours(9);
-    viewmonth.setMinutes(0);
-    viewmonth.setSeconds(0);
-    Session.set('viewmonth', viewmonth);
-    updateTimeline();
-    updateAllProjectArea(Tasks);
+  //タイムラインがクリックされた
+  'click #cvs_timeline': function(event){
+    Session.set('selectedproject', null);
+    Session.set('selectedtask', null);
+    //選択強調
+    $('.selectedtask').removeClass('selectedtask');
+    $('.selectedproject').removeClass('selectedproject');    
+    return false;
   },
-  //ボタンによるシフト
-  'click #btn_leftshift': function(){
-    var viewmonth = new Date($('#viewmonth').val());
-    viewmonth.setTime(viewmonth.getTime() - ONEDAYMILI * 7);
-    Session.set('viewmonth', viewmonth);    
-    updateTimeline();
-    updateAllProjectArea(Tasks);
-  },
-  //ボタンによるシフト
-  'click #btn_rightshift': function(){
-    var viewmonth = new Date($('#viewmonth').val());
-    viewmonth.setTime(viewmonth.getTime() + ONEDAYMILI * 7);
-    Session.set('viewmonth', viewmonth);    
-    updateTimeline();
-    updateAllProjectArea(Tasks);
+  //ズームボタン
+  'click #btn_zoom': function(event){
+    var icon = $('#btn_zoom .glyphicon');
+    if(icon.hasClass('glyphicon-resize-small')){
+      icon.removeClass('glyphicon-resize-small');
+      icon.addClass('glyphicon-resize-full');
+      Session.set('dayspan', DAYSPAN_WIDE); 
+      Session.set('timelinedays', TIMELINEDAYS_WIDE);
+      updateTimeline();
+    } else {
+      icon.removeClass('glyphicon-resize-full');
+      icon.addClass('glyphicon-resize-small');
+      Session.set('dayspan', DAYSPAN_DEF); 
+      Session.set('timelinedays', TIMELINEDAYS_DEF);
+      updateTimeline();
+    }
   }
-
 });
+
+
 
 //プロジェクトテンプレートのヘルパー
 Template.project.helpers({
   //プロジェクトが持つタスクの一覧を取得
   tasks: function(){
-    return Tasks.find({'prid': this._id});
+    var result = Tasks.find({'prid': this._id});
+    //他のユーザーによるタスク更新を感知
+    result.observe({
+      added: function (doc) {
+        updateProjectArea(doc.prid, Tasks);
+      },
+      changed: function (newdoc, olddoc) {
+        // console.log(newdoc);
+        if(
+          (newdoc.dl.getTime() != olddoc.dl.getTime())||
+          (newdoc.brpos != olddoc.brpos) ||
+          (newdoc.w != olddoc.w)
+          )
+        {
+            updateProjectArea(newdoc.prid, Tasks);
+        }
+      },
+      removed: function(olddoc){
+        updateProjectArea(olddoc.prid, Tasks);        
+      }
+    });
+    //結果を返す
+    return result;
   }
 });
 
@@ -234,29 +308,40 @@ Template.task.helpers({
     var dayspan = Session.get('dayspan');
     var startdate = Math.round(viewmonth.getTime() / ONEDAYMILI);
     var x = Math.round(this.dl.getTime()/ONEDAYMILI)
+    var w = dayspan;
     if(this.span){
-      return (x - startdate + 1)*dayspan - this.span * dayspan;
-    } else {
-      return (x - startdate + 1)*dayspan - dayspan;
+      w = this.span * dayspan;
     }
+    if(w<DAYSPAN_MIN) w = DAYSPAN_MIN;
+    return (x - startdate + 1)*dayspan - w;
   },
   //タスクのブランチ位置を返す
   taskypos: function(){
     if(this.brpos){
-      return this.brpos * 60;
+      return this.brpos * 60 + TASKSHIFTDOWN;
     } else {
-      return 0;
+      return TASKSHIFTDOWN;
     }
   },
   //タスクの幅を返す
   taskw: function(){
     var dayspan = Session.get('dayspan');
+    var w = dayspan;
     if(this.span){
-      return this.span * dayspan;
-    } else {
-      return dayspan;
+      w = this.span * dayspan;
     }
-  }
+    if(w<DAYSPAN_MIN) w = DAYSPAN_MIN;
+    return w;
+  },
+  //ステータスを返す
+  taskstatus: function(){
+    if(!this.stus) return 'task-status0';
+    console.log(this.stus);
+    if(this.stus==0) return 'task-status0';
+    if(this.stus==50) return 'task-status50';
+    if(this.stus==100) return 'task-status100';
+    if(this.stus==-1) return 'task-status-1';
+  },
 });
 
 //プロジェクトビューのレンダー

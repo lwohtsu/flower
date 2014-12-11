@@ -1,6 +1,6 @@
 <!-- タスクフォーム -->
 <template name="taskform">
-<div class=" panel panel-default">
+<div class="panel panel-info">
 	<div class="panel-heading">Task Info</div>
 	<div class="panel-body">
 {{#with currenttask}}
@@ -10,39 +10,54 @@
 				<label for="tasktitle" class="sr-only">task title</label>
 				<input type="text" class="form-control input-sm" id="tasktitle" placeholder="task title" value="{{ti}}">
 			</div>	
+			<!-- タスクの担当者 -->
+			<div class="form-group">
+				<label for="tsk_assignee" class="sr-only">assigned user</label>
+				<input type="text" class="form-control input-sm" id="tsk_assignee" placeholder="username" autocomplete="on" list="users1" value="{{formatname}}" aria-describedby="taskuser-error-status" size="10">
+					<datalist id="users1">
+				{{#each realusers}}
+        			{{> itemuser}}
+      			{{/each}}
+				{{#each virtualusers}}
+        			{{> itemuser}}
+      			{{/each}}
+				</datalist>
+			</div>
 			<div class="row">
-				<!-- タスクの担当者 -->
-				<div class="form-group col-sm-4">
-					<label for="tsk_assignee" class="sr-only">assigned user</label>
-					<input type="text" class="form-control input-sm" id="tsk_assignee" placeholder="username" autocomplete="on" list="users1" value="{{formatname}}" aria-describedby="taskuser-error-status">
-  					<datalist id="users1">
-					{{#each realusers}}
-	        			{{> itemuser}}
-	      			{{/each}}
-					{{#each virtualusers}}
-	        			{{> itemuser}}
-	      			{{/each}}
-					</datalist>
-				</div>
 				<!-- デッドライン（〆切り） -->
-				<div class="form-group col-sm-4">
+				<div class="form-group col-md-7">
 					<label for="tsk_deadline" class="sr-only">deadline</label>
 					<input type="date" class="form-control input-sm" id="tsk_deadline" 
 					value="{{formatdeadline}}">
 				</div>
 				<!-- 幅 -->
-				<div class="form-group col-sm-2">
+				<div class="form-group col-md-5">
 					<label for="tsk_span" class="sr-only">span</label>
 					<input type="number" class="form-control input-sm" id="tsk_span" 
 					placeholder="span(days)" value="{{spandate}}" min="1">
 				</div>
-				<!-- タスククローズ -->
-				<div class="checkbox col-sm-2">
-					<label>
-						<input type="checkbox" id="closetask"> closed <span id="closedate"></span>
-					</label>
-				</div>
 			</div>
+			<!-- タスクステータス -->
+			<label class="radio-inline">
+				<input type="radio" name="taskStatusRadio" id="radio-status1" value="0" 
+				{{statuschecked1}}>
+				<img class="img-status" src="icon/status0.png" alt="status0" >
+			</label>
+			<label class="radio-inline">
+				<input type="radio" name="taskStatusRadio" id="radio-status2" value="50"  
+				{{statuschecked2}}>
+				<img class="img-status" src="icon/status50.png" alt="status50">
+			</label>
+			<label class="radio-inline">
+				<input type="radio" name="taskStatusRadio" id="radio-status3" value="100"  
+				{{statuschecked3}}>
+				<img class="img-status" src="icon/status100.png" alt="status100">
+			</label>
+			<label class="radio-inline">
+				<input type="radio" name="taskStatusRadio" id="radio-status4" value="-1"  
+				{{statuschecked4}}>
+				<img class="img-status" src="icon/status-1.png" alt="status-1">
+			</label>
 			<hr>
 			<!-- タスクタイマー -->
 			<div class="form-group">
@@ -83,7 +98,7 @@
 				</button>
 				<!-- タスク削除 -->
 				<button type="button" class="btn btn-xs btn-danger pull-right" id="btn_deltask">
-					<span class="glyphicon glyphicon-trash"></span>delete this
+					<span class="glyphicon glyphicon-trash"></span>delete task
 				</button>
 			</div>
 

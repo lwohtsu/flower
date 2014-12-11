@@ -43,12 +43,13 @@
 
 	<!-- コンテナ -->
 	<div class="container-fluid">
+		<div class="row">
 		{{#if currentUser}}
 		<!-- ログイン時の表示 -->
 		<!-- リストエリア（プロジェクトやタスクが表示される領域） -->
-		<div id="listarea" class="tab-content row">
+		<div id="listarea" class="tab-content col-md-9">
 			<!-- open〜UserViewはクエリーが違うだけで表示するパネルは同一 -->
-			<div role="tabpanel" class="tab-pane active col-md-12" id="projectpanel">
+			<div role="tabpanel" class="tab-pane active row" id="projectpanel">
 			{{> projectview}}
 			</div>
 			<!-- 設定パネル -->
@@ -56,11 +57,11 @@
 			setting
 			</div>
 		</div>
-		<hr/>
 		<!-- コンソールエリア -->
-		<div id="consolearea" class="row">
-			<div class="col-sm-4" id="projectform">{{> projectform}}</div>
-			<div class="col-sm-8" id="taskform">{{> taskform}}</div>
+		<div id="consolearea" class="col-md-3">
+			<div class="row" id="monthform">{{> monthform}}</div>
+			<div class="row" id="taskform">{{> taskform}}</div>
+			<div class="row" id="projectform">{{> projectform}}</div>
 		</div>
 
 		{{else}}
@@ -68,6 +69,7 @@
 		<div class="alert alert-info">Please create user-account from [Sign in].
 		</div>
 		{{/if}}
+		</div> <!--row-->
 	</div> <!--container-->
 </body>
 

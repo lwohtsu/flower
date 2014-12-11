@@ -3,9 +3,27 @@
 */
 
 //タイムライン更新用定数
-var HEADWIDTH = 240+18;
+var HEADWIDTH = 0;
+//1日
 var ONEDAYMILI = 24*60*60*1000;
-var TIMELINEDAYS = 29;
+//タイムラインの表示期間（日数）
+var TIMELINEDAYS_DEF = 29;
+var TIMELINEDAYS_WIDE = 120;
+//1日の幅（ピクセル）
+var DAYSPAN_DEF = 40;
+var DAYSPAN_WIDE = 20;
+var DAYSPAN_MIN = 30;
+
+var TASKSHIFTDOWN = 28;
+
+
+//リサイズ
+function resizeAllArea(){
+	var hh = $('header').height();
+	var sh = window.innerHeight ;
+	$('#listarea').height(sh - hh);
+	$('#consolearea').height(sh - hh);
+}
 
 
 //日付をゼロパディングする
@@ -43,35 +61,58 @@ function updateProjectArea(projid, tasks){
 	//一番大きいmaxbrposを探す
 	for(var i in taskary){
 		// console.log(taskary[i].brpos);
-		Meteor.call('updateTaskBrpos', i, taskary[i].brpos);//ついでに更新
+		//brposが変更されていた場合はdbも更新
+		if(taskary[i].brupdate){
+			Meteor.call('updateTaskBrpos', i, taskary[i].brpos);
+		}
 		if(maxbrpos < taskary[i].brpos) maxbrpos = taskary[i].brpos;
 	}
 	// console.log(maxbrpos);
 	//プロジェクトの高さを拡張
 	var area = $('#'+projid);
-	area.height((maxbrpos+1) * 60);
 	//サイズ設定
 	var dayspan = Session.get('dayspan');
-	var width = (TIMELINEDAYS)*dayspan;
-	if(width>document.documentElement.clientWidth) width = document.documentElement.clientWidth;
-	area.width(width)// + HEADWIDTH);
+	var timelinedays = Session.get('timelinedays');
+	var width = (timelinedays)*dayspan;
+	if(width>$('#listarea').width()) width = $('#listarea').width();
+	area.width(width);
+	var height = (maxbrpos+1) * 60 + 18 + TASKSHIFTDOWN;
+	area.height(height);
 	var cvs = area.find('.project-cvs');
-	cvs.get(0).height = (maxbrpos+1) * 60;
-	cvs.get(0).width = width;// + HEADWIDTH;
+	if(! cvs.get(0)) return;	//エラー対応
+	cvs.get(0).height = height;
+	cvs.get(0).width = width;
+	// cvs.css('top', TASKSHIFTDOWN);
 	var ctx = cvs.get(0).getContext('2d');
 	//土日をグレーアウト
 	ctx.fillStyle = '#eee';
-	for(var i=0; i<=TIMELINEDAYS; i++){
+	for(var i=0; i<=timelinedays; i++){
 		if(i%7>4){
-			ctx.fillRect(i*dayspan + HEADWIDTH, 0, dayspan, (maxbrpos+1) * 60);
+			ctx.fillRect(i*dayspan, 0, dayspan, height);
 		}
-	 }
+	}
+
 	//接続線の描画
 	// console.log(lineary);
-	ctx.lineWidth = 3;
 	var viewmonth = Session.get('viewmonth');
 	var dayspan = Session.get('dayspan');
 	var startdate = Math.round(viewmonth.getTime() / ONEDAYMILI);
+	//今日の線
+	var today = new Date();
+	today.setHours(9);
+	today.setMinutes(0);
+	today.setSeconds(0);  
+	var todayval = today.getTime() - viewmonth.getTime();
+	todayval /= (ONEDAYMILI);
+	todayval = Math.round(todayval) * dayspan;
+	ctx.strokeStyle = '#AAF';
+	ctx.lineWidth = 1;
+	ctx.beginPath();
+	ctx.moveTo(todayval, 0);
+	ctx.lineTo(todayval, height);
+	ctx.stroke();  
+	//接続線の描画
+	ctx.lineWidth = 3;
 	for(var i=0; i<lineary.length; i++){
 		//始点終点の座標計算
 		var sy = taskary[lineary[i].start].brpos * 60 + 24;
@@ -87,8 +128,8 @@ function updateProjectArea(projid, tasks){
 			// console.log('sx:'+(sx - startdate + 1)+' ex:'+(ex - startdate + 1));
 			ctx.strokeStyle = '#86CE86';
 			ctx.beginPath();
-			ctx.moveTo((sx - startdate + 1)*dayspan + HEADWIDTH, sy);
-			ctx.lineTo((ex - startdate + 1)*dayspan + HEADWIDTH, sy);
+			ctx.moveTo((sx - startdate + 1)*dayspan, sy + TASKSHIFTDOWN);
+			ctx.lineTo((ex - startdate + 1)*dayspan, sy + TASKSHIFTDOWN);
 			ctx.stroke(); 
 		} else{
 			//子ブランチとの接続
@@ -97,9 +138,9 @@ function updateProjectArea(projid, tasks){
 			// console.log('sx:'+(sx - startdate + 1) + ' sy:'+sy);
 			// console.log('ex:'+(ex - startdate + 1) + ' ey:'+ey);
 			ctx.beginPath();
-			ctx.moveTo((sx - startdate + 1)*dayspan + HEADWIDTH+dayspan/2, sy);
-			ctx.lineTo((sx - startdate + 1)*dayspan + HEADWIDTH+dayspan/2, ey);
-			ctx.lineTo((ex - startdate + 1)*dayspan + HEADWIDTH, ey);
+			ctx.moveTo((sx - startdate + 1)*dayspan+dayspan/2, sy + TASKSHIFTDOWN);
+			ctx.lineTo((sx - startdate + 1)*dayspan+dayspan/2, ey + TASKSHIFTDOWN);
+			ctx.lineTo((ex - startdate + 1)*dayspan, ey + TASKSHIFTDOWN);
 			ctx.stroke(); 
 		}
 	}
@@ -112,7 +153,10 @@ function exploreTask(task, maxbrpos, taskary, lineary){
 	var curary = [];
 	do{
 		if(!task) continue;
-		task.brpos = maxbrpos;	//同じブランチの子タスクのbrposを設定
+		if(task.brpos != maxbrpos){
+			task.brupdate = true;	//db更新のためにbrposが変更されたことを記録
+			task.brpos = maxbrpos;	//同じブランチの子タスクのbrposを設定
+		}
 		curary.push(task._id);
 		if(task.ctsk) {
 			if(taskary[task.ctsk]){
@@ -141,4 +185,66 @@ function exploreTask(task, maxbrpos, taskary, lineary){
 	}
 	// console.log('mb:' + maxbrpos);
 	return maxbrpos;
+}
+
+// タイムラインの描画
+function updateTimeline(){
+  var viewmonth = Session.get('viewmonth');
+  var dayspan = Session.get('dayspan');
+  var timelinedays = Session.get('timelinedays');
+  //キャンバスを取得
+  var cvs = $('#cvs_timeline');
+  var startday = 0; //7日前からタイムラインを開始する
+  //サイズ設定
+  var width = timelinedays*dayspan;// - HEADWIDTH;
+  if(width>$('#listarea').width()) width = $('#listarea').width();
+  cvs.get(0).width = width - HEADWIDTH;
+  cvs.get(0).height = 60;
+  // $('nav').width(width);//+HEADWIDTH);
+  //描画
+  var ctx = cvs.get(0).getContext('2d');
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, width, 60);
+  ctx.strokeStyle = '#aaa';
+  ctx.lineWidth = 1;
+  ctx.font = '30px  Arial';
+  ctx.fillStyle = '#aaa';
+  //目盛りと日付を描画
+  for(var i=0; i<=timelinedays; i++){
+    if(i%7==0){
+      //週頭の目盛り
+      ctx.beginPath();
+      ctx.moveTo(i*dayspan, 0);
+      ctx.lineTo(i*dayspan, 60);
+      ctx.stroke();
+      var date = new Date(viewmonth.getTime() + i*ONEDAYMILI);
+      ctx.fillText((date.getMonth()+1) + '/' + date.getDate(), i*dayspan, 30);
+      //console.log((date.getMonth()+1) + '/' + date.getDate());
+    } else {
+      //日の目盛り
+      ctx.beginPath();
+      ctx.moveTo(i*dayspan, 50);
+      ctx.lineTo(i*dayspan, 60);
+      ctx.stroke();      
+    }
+  }
+  //今日の日付
+  ctx.strokeStyle = '#68f';
+  var today = new Date();
+  today.setHours(9);
+  today.setMinutes(0);
+  today.setSeconds(0);  
+  // console.log('++' + today);
+  // console.log('++' + today.getTime());
+  var todayval = today.getTime() - viewmonth.getTime();
+  todayval /= (ONEDAYMILI);
+  todayval = Math.round(todayval) * dayspan;
+  // console.log('++' + todayval);
+  ctx.beginPath();
+  ctx.moveTo(todayval, 50);
+  ctx.lineTo(todayval, 60);
+  ctx.stroke();  
+  ctx.fillStyle = '#68f';
+  ctx.font = '14px  Arial';
+  ctx.fillText('today', todayval+2, 54);
 }

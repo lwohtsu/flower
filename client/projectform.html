@@ -1,6 +1,6 @@
 <!-- プロジェクトフォーム -->
 <template name="projectform">
-<div class=" panel panel-default">
+<div class="panel panel-warning">
 	<div class="panel-heading">Project Info</div>
 	<div class="panel-body">
 {{#with currentproject}}
@@ -45,7 +45,7 @@
 				<!-- プロジェクト操作（削除） -->
 				<div class="radio col-sm-4">
 				<button type="button" class="btn btn-xs btn-danger" id="btn_delproj">
-					<span class="glyphicon glyphicon-trash"></span>delete this
+					<span class="glyphicon glyphicon-trash"></span>delete project
 				</button>
 				</div>
 			</div>
@@ -67,4 +67,3 @@
 	<button type="button" class="close del-item"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 	</li>
 </template>
-

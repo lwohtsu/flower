@@ -163,14 +163,19 @@ Meteor.methods({
 		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
 		Tasks.update({_id: tid}, {$set: {us: user}});
 	},
-	updateTaskDeadline: function(tid, deadline){
+	updateTaskDeadline: function(tid, deadline, movechild){
 		//セキュリティチェック
 		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
 		var task = Tasks.findOne({_id: tid});
 		//日付の差を求める
 		var shift = deadline.getTime() - task.dl.getTime();
-		//TODO：ここから先は変更が必要
-		updateAllTaskDeadline(task, shift);
+		if(movechild){
+			//子もまとめて変更
+			updateAllTaskDeadline(task, shift);
+		} else {
+			//このタスクだけ変更
+			Tasks.update({_id: task._id}, {$set: {dl: deadline}});
+		}
 	},
 	updateTaskBrpos: function(tid, brpos){
 		//セキュリティチェック
@@ -181,6 +186,11 @@ Meteor.methods({
 		//セキュリティチェック
 		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
 		Tasks.update({_id: tid}, {$set: {span: span}});
+	},
+	updateTaskStatus: function(tid, stusval){
+		//セキュリティチェック
+		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
+		Tasks.update({_id: tid}, {$set: {stus: stusval}});
 	},
 });
 

@@ -1,0 +1,18 @@
+<template name="monthform">
+	<div class=" panel panel-default">
+	<div class="panel-body">
+	<form role="form">
+	<!-- 表示月選択 -->
+	<div id="monthselector">
+		<div class="form-group">
+			<label for="viewmonth">view week</label>
+			<input type="date" class="form-control input-sm" id="viewmonth" value="{{viewmonth}}">
+		</div>
+	</div>
+	<!-- 移動ボタン -->
+	<button type="button" id="btn_leftshift" class="btn btn-default btn-xs">7<span class="glyphicon glyphicon-chevron-left"></span><span class="sr-only">shift left</span></button>
+	<button type="button" id="btn_rightshift" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-chevron-right"></span>7<span class="sr-only">Close</span></button>
+	</form>
+	</div>
+	</div>
+</template>
