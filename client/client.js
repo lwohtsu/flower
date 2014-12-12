@@ -119,7 +119,7 @@ Template.projectview.rendered = function(){
   $(document).keyup(function(event){
     if($(':focus').prop("tagName") == 'INPUT') return;
 
-    // console.log('shortcut' + event.keyCode);
+    console.log('shortcut' + event.keyCode);
     //タスク非選択時はタイムラインのスクロール
     var viewmonth = new Date($('#viewmonth').val());
     var seltaskid = Session.get('selectedtask');
@@ -192,7 +192,15 @@ Template.projectview.rendered = function(){
             task.dl.setTime(task.dl.getTime() + ONEDAYMILI);
             Meteor.call('updateTaskDeadline', task._id, task.dl, false);
             return false;
-            break;        
+            break;     
+          case 40: //タスクをブランチの最下段へ    
+            Meteor.call('bringToLastBranch', task._id);
+            return false;
+            break;
+          case 38: //タスクをブランチの最上段へ    
+            Meteor.call('bringToFirstBranch', task._id);
+            return false;
+            break;
         }
       }
     }
@@ -290,6 +298,9 @@ Template.project.helpers({
 Template.task.helpers({
   //整形した締め切り日を返す
   formatdeadline: function(){
+    if(this.span){
+      return (this.dl.getMonth()+1) + '/' + this.dl.getDate() + '(' + this.span + ')';
+    }
     return (this.dl.getMonth()+1) + '/' + this.dl.getDate();
   },
   //整形したユーザー名を返す
@@ -336,7 +347,7 @@ Template.task.helpers({
   //ステータスを返す
   taskstatus: function(){
     if(!this.stus) return 'task-status0';
-    console.log(this.stus);
+    // console.log(this.stus);
     if(this.stus==0) return 'task-status0';
     if(this.stus==50) return 'task-status50';
     if(this.stus==100) return 'task-status100';

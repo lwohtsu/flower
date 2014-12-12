@@ -192,6 +192,38 @@ Meteor.methods({
 		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
 		Tasks.update({_id: tid}, {$set: {stus: stusval}});
 	},
+	//ブランチ中のタスクの順番変更
+	bringToLastBranch: function(tid){
+		//セキュリティチェック
+		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
+		// 現在のタスクを子に持つ親タスクを探す
+		var parent = Tasks.findOne({brch: tid});
+		if(parent){
+			//ブランチ配列からtidを探して抜き、末尾に追加する
+			var brary = parent.brch;
+			brary.some(function(v, i){
+				if (v==tid) brary.splice(i,1);    
+			});
+			brary.push(tid);
+			Tasks.update({'_id': parent._id}, {$set: {'brch':brary}});
+		}
+	},
+	bringToFirstBranch: function(tid){
+		//セキュリティチェック
+		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
+		// 現在のタスクを子に持つ親タスクを探す
+		var parent = Tasks.findOne({brch: tid});
+		if(parent){
+			//ブランチ配列からtidを探して抜き、末尾に追加する
+			var brary = parent.brch;
+			brary.some(function(v, i){
+				if (v==tid) brary.splice(i,1);    
+			});
+			brary.unshift(tid);
+			Tasks.update({'_id': parent._id}, {$set: {'brch':brary}});
+		}
+	},
+
 });
 
 //すべての子とブランチの締め切り日をずらす

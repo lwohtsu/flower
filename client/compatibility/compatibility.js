@@ -7,14 +7,17 @@ var HEADWIDTH = 0;
 //1日
 var ONEDAYMILI = 24*60*60*1000;
 //タイムラインの表示期間（日数）
-var TIMELINEDAYS_DEF = 29;
+var TIMELINEDAYS_DEF = 50;
 var TIMELINEDAYS_WIDE = 120;
 //1日の幅（ピクセル）
-var DAYSPAN_DEF = 40;
-var DAYSPAN_WIDE = 20;
-var DAYSPAN_MIN = 30;
+var DAYSPAN_DEF = 30;
+var DAYSPAN_WIDE = 15;
+var DAYSPAN_MIN = 20;
 
 var TASKSHIFTDOWN = 28;
+
+// 倍率変更している場合、逆変換
+var ZOOMREVERSE = 1;
 
 
 //リサイズ
@@ -74,7 +77,7 @@ function updateProjectArea(projid, tasks){
 	var dayspan = Session.get('dayspan');
 	var timelinedays = Session.get('timelinedays');
 	var width = (timelinedays)*dayspan;
-	if(width>$('#listarea').width()) width = $('#listarea').width();
+	if(width>$('#listarea').width()*ZOOMREVERSE) width = $('#listarea').width()*ZOOMREVERSE;
 	area.width(width);
 	var height = (maxbrpos+1) * 60 + 18 + TASKSHIFTDOWN;
 	area.height(height);
@@ -117,12 +120,14 @@ function updateProjectArea(projid, tasks){
 		//始点終点の座標計算
 		var sy = taskary[lineary[i].start].brpos * 60 + 24;
 		var sx = Math.round(taskary[lineary[i].start].dl.getTime()/ONEDAYMILI);
+		var ex = Math.round(taskary[lineary[i].end].dl.getTime()/ONEDAYMILI);
 		if(taskary[lineary[i].start].span){
 			sx -= taskary[lineary[i].start].span;
+			// ex -= taskary[lineary[i].end].span;
 		} else {
 			sx -= 1;
+			// ex -= 1;
 		}
-		var ex = Math.round(taskary[lineary[i].end].dl.getTime()/ONEDAYMILI);
 		if(lineary[i].connection=='-'){
 			//子タスクとの接続
 			// console.log('sx:'+(sx - startdate + 1)+' ex:'+(ex - startdate + 1));
@@ -148,7 +153,6 @@ function updateProjectArea(projid, tasks){
 
 //タスクを探索する再起関数
 function exploreTask(task, maxbrpos, taskary, lineary){
-	//マスターブランチのタスクの位置は常に0
 	//子タスクをたどり一時配列にpushする（昇順で入る）
 	var curary = [];
 	do{
@@ -168,6 +172,7 @@ function exploreTask(task, maxbrpos, taskary, lineary){
 	//子タスクを降順で探索する
 	for(var i=curary.length-1; i>=0; i--){
 		//if(!task) continue;
+		//マスターブランチのタスクの位置は常に0
 		if(task.mbr) maxbrpos = 0;
 		// console.log(curary[i]+':'+taskary[curary[i]].ti);
 		//ブランチを探索し、maxbrposを更新する
@@ -197,7 +202,7 @@ function updateTimeline(){
   var startday = 0; //7日前からタイムラインを開始する
   //サイズ設定
   var width = timelinedays*dayspan;// - HEADWIDTH;
-  if(width>$('#listarea').width()) width = $('#listarea').width();
+  if(width>$('#listarea').width()*ZOOMREVERSE) width = $('#listarea').width()*ZOOMREVERSE;
   cvs.get(0).width = width - HEADWIDTH;
   cvs.get(0).height = 60;
   // $('nav').width(width);//+HEADWIDTH);
@@ -241,10 +246,10 @@ function updateTimeline(){
   todayval = Math.round(todayval) * dayspan;
   // console.log('++' + todayval);
   ctx.beginPath();
-  ctx.moveTo(todayval, 50);
+  ctx.moveTo(todayval, 30);
   ctx.lineTo(todayval, 60);
   ctx.stroke();  
   ctx.fillStyle = '#68f';
   ctx.font = '14px  Arial';
-  ctx.fillText('today', todayval+2, 54);
+  ctx.fillText('today' + (today.getMonth()+1) + '/' + today.getDate(), todayval+2, 44);
 }
