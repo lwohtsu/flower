@@ -127,7 +127,7 @@ Template.taskform.events({
   //ステータス変更
   'click input[name="taskStatusRadio"]': function(event){
     Meteor.call('updateTaskStatus', this._id, $(event.target).val());
-    return true;
+    return false;
   },
   //enterによるsubmitをすべて無効に
   'submit': function(event){

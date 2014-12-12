@@ -66,6 +66,7 @@ function updateProjectArea(projid, tasks){
 		// console.log(taskary[i].brpos);
 		//brposが変更されていた場合はdbも更新
 		if(taskary[i].brupdate){
+			console.log('updateTaskBrpos');
 			Meteor.call('updateTaskBrpos', i, taskary[i].brpos);
 		}
 		if(maxbrpos < taskary[i].brpos) maxbrpos = taskary[i].brpos;
@@ -149,6 +150,7 @@ function updateProjectArea(projid, tasks){
 			ctx.stroke(); 
 		}
 	}
+	// console.log('updateProjectArea');
 }
 
 //タスクを探索する再起関数

@@ -176,21 +176,25 @@ Meteor.methods({
 			//このタスクだけ変更
 			Tasks.update({_id: task._id}, {$set: {dl: deadline}});
 		}
+		return tid;
 	},
 	updateTaskBrpos: function(tid, brpos){
 		//セキュリティチェック
 		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
 		Tasks.update({_id: tid}, {$set: {brpos: brpos}});
+		return tid;
 	},
 	updateTaskSpan: function(tid, span){
 		//セキュリティチェック
 		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
 		Tasks.update({_id: tid}, {$set: {span: span}});
+		return tid;
 	},
 	updateTaskStatus: function(tid, stusval){
 		//セキュリティチェック
 		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
 		Tasks.update({_id: tid}, {$set: {stus: stusval}});
+		return tid;
 	},
 	//ブランチ中のタスクの順番変更
 	bringToLastBranch: function(tid){
@@ -207,6 +211,7 @@ Meteor.methods({
 			brary.push(tid);
 			Tasks.update({'_id': parent._id}, {$set: {'brch':brary}});
 		}
+		return tid;
 	},
 	bringToFirstBranch: function(tid){
 		//セキュリティチェック
@@ -222,6 +227,7 @@ Meteor.methods({
 			brary.unshift(tid);
 			Tasks.update({'_id': parent._id}, {$set: {'brch':brary}});
 		}
+		return tid;
 	},
 
 });

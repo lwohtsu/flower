@@ -77,7 +77,7 @@ Template.projectview.helpers({
   },
   //プロジェクト一覧
   projects: function(){
-    return Projects.find({});
+    return Projects.find({}, {sort: {create:1}});
   },
 });
 
@@ -111,7 +111,7 @@ Template.projectview.rendered = function(){
         $('#btn_zoom').css('top', 0);
       }
       var sl = $('#listarea').scrollLeft();
-      console.log('sl:' + sl);
+      // console.log('sl:' + sl);
     }, 500);
   });
 
@@ -119,7 +119,7 @@ Template.projectview.rendered = function(){
   $(document).keyup(function(event){
     if($(':focus').prop("tagName") == 'INPUT') return;
 
-    console.log('shortcut' + event.keyCode);
+    // console.log('shortcut' + event.keyCode);
     //タスク非選択時はタイムラインのスクロール
     var viewmonth = new Date($('#viewmonth').val());
     var seltaskid = Session.get('selectedtask');
@@ -228,7 +228,7 @@ Template.projectview.events({
   'click .project': function(event){
     var target = $(event.target);
     target = target.parents('.project');
-    // console.log('prjid:' + target.attr('id'));
+    console.log('prjid:' + target.attr('id'));
     Session.set('selectedproject', target.attr('id'));
     //選択強調
     $('.selectedproject').removeClass('selectedproject');
@@ -252,12 +252,14 @@ Template.projectview.events({
       Session.set('dayspan', DAYSPAN_WIDE); 
       Session.set('timelinedays', TIMELINEDAYS_WIDE);
       updateTimeline();
+      updateAllProjectArea(Tasks);
     } else {
       icon.removeClass('glyphicon-resize-full');
       icon.addClass('glyphicon-resize-small');
       Session.set('dayspan', DAYSPAN_DEF); 
       Session.set('timelinedays', TIMELINEDAYS_DEF);
       updateTimeline();
+      updateAllProjectArea(Tasks);
     }
   }
 });
@@ -268,11 +270,17 @@ Template.projectview.events({
 Template.project.helpers({
   //プロジェクトが持つタスクの一覧を取得
   tasks: function(){
-    var result = Tasks.find({'prid': this._id});
+    var result = Tasks.find({prid: this._id}, {sort: {dl:1}});
     //他のユーザーによるタスク更新を感知
+    var observetimer = null;
     result.observe({
       added: function (doc) {
-        updateProjectArea(doc.prid, Tasks);
+        var sdoc = doc;
+        Meteor.clearTimeout(observetimer);
+        observetimer  = Meteor.setTimeout(function(){
+          console.log('observe added');
+          updateProjectArea(sdoc.prid, Tasks);          
+        }, 300);
       },
       changed: function (newdoc, olddoc) {
         // console.log(newdoc);
@@ -282,10 +290,16 @@ Template.project.helpers({
           (newdoc.w != olddoc.w)
           )
         {
-            updateProjectArea(newdoc.prid, Tasks);
+          var sdoc = newdoc;
+          Meteor.clearTimeout(observetimer);
+          observetimer  = Meteor.setTimeout(function(){
+            console.log('observe updated');
+            updateProjectArea(sdoc.prid, Tasks);
+          }, 300);
         }
       },
       removed: function(olddoc){
+        console.log('observe removed');
         updateProjectArea(olddoc.prid, Tasks);        
       }
     });
