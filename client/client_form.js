@@ -36,6 +36,14 @@ Template.projectform.events({
     $(event.target).val('');
     return false;
   },
+  //プロジェクトをクローズ
+  'change #closeproject': function(event){
+    if(!this.closed) {
+        Meteor.call("updateProjectClosed", this._id, true);
+    } else {
+        Meteor.call("updateProjectClosed", this._id, ! this.closed);
+    }
+  },
   //enterによるsubmitをすべて無効に
   'submit': function(event){
     return false;
@@ -181,7 +189,7 @@ Template.projectform.helpers({
   //ユーザー一覧
   realusers: function(){
     // console.log(Meteor.users.find({}));
-    return Meteor.users.find({});
+    return Meteor.users.find({}, {sort:{username:1}});
   },
   //カレントプロジェクト
   currentproject: function(){
@@ -195,6 +203,11 @@ Template.projectform.helpers({
   //参加ユーザーの一覧
   member: function(){
     return Meteor.users.find({'_id': {$in: this.urs}});
+  },
+  //クローズかどうか
+  projectclosed: function(){
+    if(!this.closed) return null;
+    if(this.closed===true) return 'checked';
   }
 });
 
@@ -202,10 +215,10 @@ Template.projectform.helpers({
 Template.taskform.helpers({
   //ユーザー一覧
   realusers: function(){
-    return Meteor.users.find({});
+    return Meteor.users.find({}, {sort:{username:1}});
   },
   virtualusers: function(){
-    return Virtuals.find({});
+    return Virtuals.find({}, {sort:{username:1}});
   },
   //カレントタスク
   currenttask: function(){
@@ -305,8 +318,8 @@ Template.settingpanel.helpers({
     return Meteor.user().profile.name;
   },
   virtuals: function(){
-    console.log(Virtuals.find({}).count());
-    return Virtuals.find({});
+    // console.log(Virtuals.find({}).count());
+    return Virtuals.find({}, {sort:{username:1}});
   }
 });
 // セッティング画面イベント

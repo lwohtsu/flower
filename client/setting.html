@@ -21,29 +21,30 @@
 		<!-- バーチャル -->
 		<h4>Add Virtual User</h4>
 		<form role="form">
-			<ul>
-			{{#each virtuals}}
-    			{{> itemvirtual}}
-  			{{/each}}
-  			</ul>
   			<div class="row">
 				<div class="form-group col-xs-4">
 					<label for="v-username">new virtual user name (start from _)</label>
 					<input type="text" class="form-control" id="new-v-username" placeholder="_vname">
 				</div>
-				<div class="form-group col-xs-4">
+				<div class="form-group col-xs-8">
 					<label for="v-realname">new virtual real-name (allow Kanji Character)</label>
 					<input type="text" class="form-control" id="new-v-realname" placeholder="real name">
 				</div>
 			</div>
 			<button class="btn btn-default" id="btn_addvirtual">add virtual user</button>
+			<hr>
+			<ul>
+			{{#each virtuals}}
+    			{{> itemvirtual}}
+  			{{/each}}
+  			</ul>
 		</form>
 	</div>
 </div>
 </template>
 
 <template name="itemvirtual">
-	<li>{{username}}
+	<li><span class="virtualusername">{{username}}</span>
 		<input type="text" class="v-realname" value="{{realname}}" data-vid="{{_id}}">
 	</li>
 </template>

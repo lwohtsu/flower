@@ -78,7 +78,10 @@ Template.projectview.helpers({
   },
   //プロジェクト一覧
   projects: function(){
-    return Projects.find({}, {sort: {create:1}});
+    if(Session.get('taskquery')==='closed'){
+      return Projects.find({closed: true}, {sort: {create:1}});
+    }
+    return Projects.find({closed: {$ne:true}}, {sort: {create:1}});
   },
 });
 

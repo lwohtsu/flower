@@ -90,7 +90,7 @@ function updateProjectArea(projid, tasks){
 	var ctx = cvs.get(0).getContext('2d');
 	//土日をグレーアウト
 	ctx.fillStyle = '#eee';
-	for(var i=0; i<=timelinedays; i++){
+	for(i=0; i<=timelinedays; i++){
 		if(i%7>4){
 			ctx.fillRect(i*dayspan, 0, dayspan, height);
 		}
@@ -116,7 +116,7 @@ function updateProjectArea(projid, tasks){
 	ctx.stroke();  
 	//接続線の描画
 	ctx.lineWidth = 3;
-	for(var i=0; i<lineary.length; i++){
+	for(i=0; i<lineary.length; i++){
 		//始点終点の座標計算
 		var sy = taskary[lineary[i].start].brpos * 60 + 24;
 		var sx = Math.round(taskary[lineary[i].start].dl.getTime()/ONEDAYMILI);

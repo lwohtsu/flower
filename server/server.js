@@ -123,35 +123,34 @@ Meteor.methods({
 	deleteTask: function(taskid){
 		//セキュリティチェック
 		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
-		var cur = Tasks.findOne({'_id': taskid});
-		var parent;
+		var cur = Tasks.findOne({_id: taskid});
 		if(cur.str) return;	//スタートタスクは削除できない
-		if(cur.ctsk){
-			//削除しようとしているタスクが子を持っている場合、それを親に引き継ぐ
-			parent = Tasks.findOne({'ctsk': cur._id});
-			if(parent){
-				Tasks.update({'_id': parent._id}, {$set: {ctsk: cur.ctsk}});
+		var parent = Tasks.findOne({ctsk: cur._id});	//親を探す
+		if(parent){
+			if(cur.ctsk){
+				//削除しようとしているタスクが子やブランチを持っている場合、それを親に引き継ぐ
+				Tasks.update({_id: parent._id}, {$set: {ctsk: cur.ctsk}, $push:{brch: cur.brch}});
+			} else {
+				//子を持っていない場合は単純に親から連結を消す
+				Tasks.update({_id: parent._id}, {$unset: {ctsk: ''}, $push:{brch: cur.brch}});
 			}
 		} else {
-			//子タスクがない場合、親から連結を消す
-			parent = Tasks.findOne({'ctsk': cur._id});
+			//ブランチの先頭（親のctskではなく、brchのほうに入っている場合）の処理
+			parent = Tasks.findOne({brch: cur._id});
 			if(parent){
-				Tasks.update({'_id': parent._id}, {$unset: {ctsk: ''}});
+				// var oldary = parent.brch;
+				// oldary.some(function(v, i){
+				// 	if (v==cur._id) oldary.splice(i,1);    
+				// });
+				// Tasks.update({'_id': parent._id}, {$set: {'brch':oldary}});
+				Tasks.update({_id: parent._id}, {$push: {brch: cur.brch}});	//子ブランチを引き継ぐ
+				if(cur.ctsk){
+					Tasks.update({_id: parent._id}, {$push: {brch: cur.ctsk}});	//子をブランチとして渡す
+				}
+				Tasks.update({_id: parent._id}, {$pull: {brch: cur._id }});	//親のブランチから取り除く
 			}
 		}
-		//ブランチの先頭でないかも調べる
-		parent = Tasks.findOne({'brch': cur._id});
-		if(parent){
-			var oldary = parent.brch;
-			oldary.some(function(v, i){
-				if (v==cur._id) oldary.splice(i,1);    
-			});
-			Tasks.update({'_id': parent._id}, {$set: {'brch':oldary}});
-			if(cur.ctsk){
-				Tasks.update({'_id': parent._id}, {$push: {'brch':cur.ctsk}});
-			}
-		}
-		Tasks.remove({'_id': taskid});
+		Tasks.remove({_id: taskid});
 	},
 	//更新用メソッド
 	updateProjectName: function(prid, name){
@@ -250,6 +249,12 @@ Meteor.methods({
 		if(proj.urs.length > 1){
 			Projects.update({_id: projid}, {$pull: {urs: userid} });
 		}
+	},
+	//プロジェクトのオープン／クローズの切り替え
+	updateProjectClosed: function(projid, bclose){
+		//セキュリティチェック
+		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
+		Projects.update({_id: projid}, {$set: {closed: bclose}});
 	},
 	// ユーザー名の変更
 	updateRealName: function(realname){
