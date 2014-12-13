@@ -1,0 +1,49 @@
+<template name="settingpanel">
+
+<div class="panel panel-default">
+	<div class="panel-heading">Setting</div>
+	<div class="panel-body">
+		<!-- ユーザー情報の設定 -->
+		<h4>User Infomation</h4>
+		<form role="form">
+			<!-- ユーザー名（固定） -->
+			<div class="form-group">
+				<label>username is </label>
+				{{username}}
+			</div>
+			<!-- リアル名 -->
+			<div class="form-group">
+				<label for="realname">real name (allow Kanji Character)</label>
+				<input type="text" class="form-control" id="realname" value="{{realname}}">
+			</div>
+		</form>
+		<hr>
+		<!-- バーチャル -->
+		<h4>Add Virtual User</h4>
+		<form role="form">
+			<ul>
+			{{#each virtuals}}
+    			{{> itemvirtual}}
+  			{{/each}}
+  			</ul>
+  			<div class="row">
+				<div class="form-group col-xs-4">
+					<label for="v-username">new virtual user name (start from _)</label>
+					<input type="text" class="form-control" id="new-v-username" placeholder="_vname">
+				</div>
+				<div class="form-group col-xs-4">
+					<label for="v-realname">new virtual real-name (allow Kanji Character)</label>
+					<input type="text" class="form-control" id="new-v-realname" placeholder="real name">
+				</div>
+			</div>
+			<button class="btn btn-default" id="btn_addvirtual">add virtual user</button>
+		</form>
+	</div>
+</div>
+</template>
+
+<template name="itemvirtual">
+	<li>{{username}}
+		<input type="text" class="v-realname" value="{{realname}}" data-vid="{{_id}}">
+	</li>
+</template>

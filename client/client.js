@@ -30,7 +30,7 @@ Virtuals = new Mongo.Collection('virtuals');
 Meteor.subscribe("projects");
 Meteor.subscribe("tasks");
 Meteor.subscribe("virtuals");
-
+Meteor.subscribe("users");
 
 //body内のヘルパー
 Template.body.helpers({
@@ -48,8 +48,8 @@ Template.body.events({
       event.preventDefault();
       var targetlink = $(event.target);
       var targetid = targetlink.attr('href');
-      var taskquery = targetlink.data('query');
-      if(taskquery != undefined){
+      var taskquery = targetlink.data('query'); //絞り込み情報
+      if(taskquery !== undefined){
         Session.set('taskquery', taskquery);
       }
       //アクティブの付け替え
@@ -57,6 +57,7 @@ Template.body.events({
       $('.tab-content .active').removeClass('active');
       targetlink.parent('li').addClass('active');
       $('.tab-content ' + targetid).addClass('active');
+      // window.location.hash = taskquery;
       return false;
     },
 });
@@ -193,11 +194,13 @@ Template.projectview.rendered = function(){
             Meteor.call('updateTaskDeadline', task._id, task.dl, false);
             return false;
             break;     
-          case 40: //タスクをブランチの最下段へ    
+          case 40: //タスクをブランチの最下段へ   
+            console.log('bringToLastBranch'); 
             Meteor.call('bringToLastBranch', task._id);
             return false;
             break;
           case 38: //タスクをブランチの最上段へ    
+            console.log('bringToFirstBranch'); 
             Meteor.call('bringToFirstBranch', task._id);
             return false;
             break;
@@ -228,7 +231,7 @@ Template.projectview.events({
   'click .project': function(event){
     var target = $(event.target);
     target = target.parents('.project');
-    console.log('prjid:' + target.attr('id'));
+    // console.log('prjid:' + target.attr('id'));
     Session.set('selectedproject', target.attr('id'));
     //選択強調
     $('.selectedproject').removeClass('selectedproject');
@@ -283,20 +286,12 @@ Template.project.helpers({
         }, 300);
       },
       changed: function (newdoc, olddoc) {
-        // console.log(newdoc);
-        if(
-          (newdoc.dl.getTime() != olddoc.dl.getTime())||
-          (newdoc.brpos != olddoc.brpos) ||
-          (newdoc.w != olddoc.w)
-          )
-        {
-          var sdoc = newdoc;
-          Meteor.clearTimeout(observetimer);
-          observetimer  = Meteor.setTimeout(function(){
-            console.log('observe updated');
-            updateProjectArea(sdoc.prid, Tasks);
-          }, 300);
-        }
+        var sdoc = newdoc;
+        Meteor.clearTimeout(observetimer);
+        observetimer  = Meteor.setTimeout(function(){
+          console.log('observe updated');
+          updateProjectArea(sdoc.prid, Tasks);
+        }, 300);
       },
       removed: function(olddoc){
         console.log('observe removed');
@@ -319,7 +314,17 @@ Template.task.helpers({
   },
   //整形したユーザー名を返す
   formatname: function(){
-    return Meteor.users.findOne({'_id': this.us}).username;
+    var user = Meteor.users.findOne({'_id': this.us});
+    if(user){
+      if(user.profile){
+        if(user.profile.name) return user.profile.name;
+      }else return user.username;
+    }
+    user = Virtuals.findOne({'_id': this.us});
+    if(user){
+      if(user.realname) return user.realname;
+      return user.username;
+    }
   },
   //ミリ秒での締め切り日を返す
   // milideadline: function(){
@@ -332,7 +337,7 @@ Template.task.helpers({
     var viewmonth = Session.get('viewmonth');
     var dayspan = Session.get('dayspan');
     var startdate = Math.round(viewmonth.getTime() / ONEDAYMILI);
-    var x = Math.round(this.dl.getTime()/ONEDAYMILI)
+    var x = Math.round(this.dl.getTime()/ONEDAYMILI);
     var w = dayspan;
     if(this.span){
       w = this.span * dayspan;

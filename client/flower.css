@@ -14,12 +14,16 @@ form .list-group-item{
 	max-height:24px;
 	padding: 4px 6px;
 }
+.projectuser{
+	background: #DDD !important;
+}
 
 .del-item{
 	font-size:1em !important;
 	line-height: 1em !important;
 	margin-left:0.5em;
 }
+
 .mainarea{
 	background-color: #666;
 }
@@ -118,10 +122,10 @@ form .list-group-item{
 	font-size: 16px;
 	position: absolute;
 	left:-18px;
-	bottom: 0px;
+	top: 0px;
 	margin-left: 18px;
 	min-width: 180px;
-	/*background: #000;rgb(234,183,101);*/
+	background: rgb(234,183,101);
 	/*color: #fff;*/
 	padding: 4px;
 	padding-right: 16px;

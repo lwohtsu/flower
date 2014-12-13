@@ -25,11 +25,40 @@ Template.projectform.events({
     Meteor.call('updateProjectName', this._id, $(event.target).val());
     return false;
   },
+  //プロジェクトにユーザー追加
+  'change #projectusers': function(event){
+    var name = $(event.target).val();
+    //リアルユーザーを追加
+    var user = Meteor.users.findOne({username: name});
+    if(user){
+      Meteor.call('addUserToProject', this._id, user._id);
+    }
+    $(event.target).val('');
+    return false;
+  },
   //enterによるsubmitをすべて無効に
   'submit': function(event){
     return false;
   }
 });
+
+//プロジェクトユーザーのイベント
+Template.projectuser.events({
+  //ユーザーの削除
+ 'click .del-item': function(event){
+    var prid = Session.get('selectedproject');
+    var uid = $(event.currentTarget).data('userid');
+    // console.log(event.currentTarget);
+    // console.log(uid);
+    if(prid){
+      if(uid){
+        console.log('delete ' + uid + ' from ' + prid);
+        Meteor.call('removeUserFromProject', prid, uid);
+      }
+    }
+ }
+});
+
 //タスクフォームのイベント
 Template.taskform.events({
   //新規タスクの追加
@@ -87,18 +116,16 @@ Template.taskform.events({
   },  
   //担当ユーザーの更新
   'change #tsk_assignee': function(event){
-    $(event.target).parents('.form-group').removeClass('has-error')
+    $(event.target).parents('.form-group').removeClass('has-error');
     //リアルユーザー→バーチャルユーザーの順で該当するユーザーを探す
     var name = $(event.target).val();
     var user = Meteor.users.findOne({username: name});
-    console.log('real: ' +user);
     if(!user) user = Virtuals.findOne({username: name});
-    console.log('virtuals: ' +user);
     if(user){
       Meteor.call('updateTaskUser', this._id, user._id);
     } else {
       //該当ユーザーがいない時は更新しないでフォームを赤に
-      $(event.target).parents('.form-group').addClass('has-error')
+      $(event.target).parents('.form-group').addClass('has-error');
     }
     return false;
   },
@@ -153,6 +180,7 @@ Template.taskform.events({
 Template.projectform.helpers({
   //ユーザー一覧
   realusers: function(){
+    // console.log(Meteor.users.find({}));
     return Meteor.users.find({});
   },
   //カレントプロジェクト
@@ -169,6 +197,7 @@ Template.projectform.helpers({
     return Meteor.users.find({'_id': {$in: this.urs}});
   }
 });
+
 //タスクフォームのヘルパー
 Template.taskform.helpers({
   //ユーザー一覧
@@ -189,13 +218,15 @@ Template.taskform.helpers({
   },
   //整形したユーザー名を返す
   formatname: function(){
-    return Meteor.users.findOne({'_id': this.us}).username;
+    var user = Meteor.users.findOne({'_id': this.us});
+    if(user) return user.username;
+    return Virtuals.findOne({'_id': this.us}).username;
   },    
   //整形した締め切り日を返す
   formatdeadline: function(){
-      return this.dl.getFullYear() +'-'
-        + parseDate(this.dl.getMonth()+1) + '-' 
-        + parseDate(this.dl.getDate());
+      return this.dl.getFullYear() +'-' + 
+        parseDate(this.dl.getMonth()+1) + '-' +
+        parseDate(this.dl.getDate());
   },
   //幅
   spandate: function(){
@@ -226,8 +257,8 @@ Template.monthform.helpers({
   //表示月
   viewmonth: function(){
     var viewmonth = Session.get('viewmonth');
-    return viewmonth.getFullYear() +'-'
-        + parseDate(viewmonth.getMonth()+1) + '-' + parseDate(viewmonth.getDate());
+    return viewmonth.getFullYear() +'-' + 
+      parseDate(viewmonth.getMonth()+1) + '-' + parseDate(viewmonth.getDate());
   }
 });
 Template.monthform.events({
@@ -259,5 +290,55 @@ Template.monthform.events({
     Session.set('viewmonth', viewmonth);    
     updateTimeline();
     updateAllProjectArea(Tasks);
+  }
+});
+
+
+// セッティング画面ヘルパー
+Template.settingpanel.helpers({
+  // ユーザー名
+  username: function(){
+    return Meteor.user().username;
+  }, 
+  // リアル名
+  realname: function(){
+    return Meteor.user().profile.name;
+  },
+  virtuals: function(){
+    console.log(Virtuals.find({}).count());
+    return Virtuals.find({});
+  }
+});
+// セッティング画面イベント
+Template.settingpanel.events({
+  // ユーザーのリアル名設定
+  'change #realname': function(event){
+    Meteor.call('updateRealName', $(event.target).val());
+    return false;    
+  },
+  //バーチャルユーザーの追加
+  'click #btn_addvirtual': function(event){
+    var vname = $('#new-v-username').val();
+    var vrname = $('#new-v-realname').val();
+    if(vname !== ''){
+      if(Virtuals.find({username: vname}).count()===0){
+        if(vname.charAt(0)=='_'){
+            console.log(vname + ':' + vrname);
+            Meteor.call('addVirtualUser', vname, vrname, function(){
+                $('#new-v-username').val('');
+                $('#new-v-realname').val('');            
+            });            
+        }
+      }
+    }
+  },
+  //バーチャルユーザーのリアル名変更
+  'change .v-realname': function(event){
+    var newname = $(event.target).val();
+    Meteor.call('updateVirtualRealName', $(event.target).data('vid'), newname);
+  },
+  //enterによるsubmitをすべて無効に
+  'submit': function(event){
+    return false;
   }
 });

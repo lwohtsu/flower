@@ -10,11 +10,11 @@ var ONEDAYMILI = 24*60*60*1000;
 var TIMELINEDAYS_DEF = 50;
 var TIMELINEDAYS_WIDE = 120;
 //1日の幅（ピクセル）
-var DAYSPAN_DEF = 30;
+var DAYSPAN_DEF = 60;
 var DAYSPAN_WIDE = 15;
 var DAYSPAN_MIN = 20;
 
-var TASKSHIFTDOWN = 28;
+var TASKSHIFTDOWN = 36;
 
 // 倍率変更している場合、逆変換
 var ZOOMREVERSE = 1;
@@ -66,7 +66,7 @@ function updateProjectArea(projid, tasks){
 		// console.log(taskary[i].brpos);
 		//brposが変更されていた場合はdbも更新
 		if(taskary[i].brupdate){
-			console.log('updateTaskBrpos');
+			// console.log('updateTaskBrpos');
 			Meteor.call('updateTaskBrpos', i, taskary[i].brpos);
 		}
 		if(maxbrpos < taskary[i].brpos) maxbrpos = taskary[i].brpos;
@@ -80,7 +80,7 @@ function updateProjectArea(projid, tasks){
 	var width = (timelinedays)*dayspan;
 	if(width>$('#listarea').width()*ZOOMREVERSE) width = $('#listarea').width()*ZOOMREVERSE;
 	area.width(width);
-	var height = (maxbrpos+1) * 60 + 18 + TASKSHIFTDOWN;
+	var height = (maxbrpos+1) * 60 + TASKSHIFTDOWN;
 	area.height(height);
 	var cvs = area.find('.project-cvs');
 	if(! cvs.get(0)) return;	//エラー対応
@@ -99,7 +99,6 @@ function updateProjectArea(projid, tasks){
 	//接続線の描画
 	// console.log(lineary);
 	var viewmonth = Session.get('viewmonth');
-	var dayspan = Session.get('dayspan');
 	var startdate = Math.round(viewmonth.getTime() / ONEDAYMILI);
 	//今日の線
 	var today = new Date();
@@ -157,6 +156,7 @@ function updateProjectArea(projid, tasks){
 function exploreTask(task, maxbrpos, taskary, lineary){
 	//子タスクをたどり一時配列にpushする（昇順で入る）
 	var curary = [];
+	var count = 0;
 	do{
 		if(!task) continue;
 		if(task.brpos != maxbrpos){
@@ -170,6 +170,9 @@ function exploreTask(task, maxbrpos, taskary, lineary){
 				task = taskary[task.ctsk];
 			}
 		} else break;
+		//ループ制限
+		count++;
+		if(count>50) break;
 	}while(task);
 	//子タスクを降順で探索する
 	for(var i=curary.length-1; i>=0; i--){
@@ -218,7 +221,7 @@ function updateTimeline(){
   ctx.fillStyle = '#aaa';
   //目盛りと日付を描画
   for(var i=0; i<=timelinedays; i++){
-    if(i%7==0){
+    if(i%7===0){
       //週頭の目盛り
       ctx.beginPath();
       ctx.moveTo(i*dayspan, 0);

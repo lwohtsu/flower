@@ -24,10 +24,10 @@
 			<!-- タブ -->
 			<div  id="navbar" class="collapse navbar-collapse">
 			  	<ul class="nav navbar-nav" id="maintab">
-					<li class="active"><a href="#projectpanel" data-query="open">Open</a></li>
+					<li class="active"><a href="#projectpanel" data-query="open">Projects</a></li>
 					<li><a href="#projectpanel" data-query="userview">UserView</a></li>
 					<li><a href="#projectpanel" data-query="closed">Closed</a></li>
-					<li><a href="#settingpanel">Setting</a></li>
+					<li><a href="#settingpanel" data-query="setting">Setting</a></li>
 			  	</ul>
 			  	<ul class="nav navbar-nav">
 				<li>
@@ -54,7 +54,7 @@
 			</div>
 			<!-- 設定パネル -->
 			<div role="tabpanel" class="tab-pane" id="settingpanel">
-			setting
+			{{> settingpanel}}
 			</div>
 		</div>
 		<!-- コンソールエリア -->

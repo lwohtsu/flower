@@ -63,7 +63,10 @@
 
 <!-- プロジェクトフォームの参加ユーザーリスト -->
 <template name="projectuser">
-	<li class="list-group-item" id="{{_id}}">{{username}}
-	<button type="button" class="close del-item"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	<li class="list-group-item projectuser">{{username}}
+		<button type="button" class="close del-item" data-userid="{{_id}}">
+			<span aria-hidden="true">&times;</span>
+			<span class="sr-only">Close</span>
+		</button>
 	</li>
 </template>

@@ -13,9 +13,14 @@ Meteor.publish("projects", function(){
 	//現在のユーザーが参加しているプロジェクトのみパブリッシュする
 	return Projects.find({'urs': this.userId });
 });
-Meteor.publish("tasks", function(){
+Meteor.publish("tasks", function(projid){
+	//TODO：ログインユーザーが参加していないプロジェクトのタスクを返さないよう制限するには？
 	return Tasks.find({});
 });
+Meteor.publish("users", function(){
+	return Meteor.users.find({});
+});
+
 
 Meteor.methods({
 
@@ -119,16 +124,17 @@ Meteor.methods({
 		//セキュリティチェック
 		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
 		var cur = Tasks.findOne({'_id': taskid});
+		var parent;
 		if(cur.str) return;	//スタートタスクは削除できない
 		if(cur.ctsk){
 			//削除しようとしているタスクが子を持っている場合、それを親に引き継ぐ
-			var parent = Tasks.findOne({'ctsk': cur._id});
+			parent = Tasks.findOne({'ctsk': cur._id});
 			if(parent){
 				Tasks.update({'_id': parent._id}, {$set: {ctsk: cur.ctsk}});
 			}
 		} else {
 			//子タスクがない場合、親から連結を消す
-			var parent = Tasks.findOne({'ctsk': cur._id});
+			parent = Tasks.findOne({'ctsk': cur._id});
 			if(parent){
 				Tasks.update({'_id': parent._id}, {$unset: {ctsk: ''}});
 			}
@@ -229,6 +235,42 @@ Meteor.methods({
 		}
 		return tid;
 	},
+	//プロジェクトユーザーの追加
+	addUserToProject: function(projid, userid){
+		//セキュリティチェック
+		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
+		Projects.update({_id: projid}, {$addToSet: {urs: userid} });
+	},
+	// プロジェクトユーザーの削除
+	removeUserFromProject: function(projid, userid){
+		//セキュリティチェック
+		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
+		//ユーザー数をチェック
+		var proj = Projects.findOne({_id: projid});
+		if(proj.urs.length > 1){
+			Projects.update({_id: projid}, {$pull: {urs: userid} });
+		}
+	},
+	// ユーザー名の変更
+	updateRealName: function(realname){
+		//セキュリティチェック
+		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
+		Meteor.users.update({_id: Meteor.userId()}, {$set: {'profile.name': realname}});
+	},
+	// バーチャルユーザー追加
+	addVirtualUser: function(vname, vrname){
+		//セキュリティチェック
+		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
+		Virtuals.insert({
+			username: vname,	//プロジェクト名
+			realname: vrname
+		});
+	},
+	updateVirtualRealName: function(vid, vrname){
+		//セキュリティチェック
+		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
+		Virtuals.update({_id: vid}, {$set:{realname: vrname}});
+	}
 
 });
 
