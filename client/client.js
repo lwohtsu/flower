@@ -66,7 +66,12 @@ Template.body.events({
       //プロジェクトエリアの更新
       if(taskquery != 'setting') {
         Meteor.setTimeout(function() {
-                updateAllProjectArea(Tasks);
+          updateAllProjectArea(Tasks);
+          //選択解除
+          Session.set('selectedproject', null);
+          Session.set('selectedtask', null);
+          $('.selectedtask').removeClass('selectedtask');
+          $('.selectedproject').removeClass('selectedproject');    
         }, 1000); 
       }
       // window.location.hash = taskquery;
