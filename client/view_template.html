@@ -5,23 +5,6 @@
 		</div>
 		<!-- ズームボタン -->
 		<button type="button" id="btn_zoom" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-resize-small"></span><span class="sr-only">zoom</span></button>
-		<!-- ユーザー選択（オートコンプリートあり） 。ユーザービューのときのみ表示-->
-		{{#if userview}}
-		<div id="userselector">
-			<div class="form-group">
-				<label for="selecteduser">user selector</label>
-				<input type="text" class="form-control input-sm" id="selecteduser" placeholder="username" autocomplete="on" list="users3">
-					<datalist id="users3">
-					{{#each realusers}}
-	        			{{> itemuser}}
-	      			{{/each}}
-					{{#each virtualusers}}
-	        			{{> itemuser}}
-	      			{{/each}}
-					</datalist>
-			</div>
-		</div>
-		{{/if}}
 	</div>
 	<!-- プロジェクトリスト -->
 	<div class="projectlist">

@@ -59,6 +59,9 @@
 		</div>
 		<!-- コンソールエリア -->
 		<div id="consolearea" class="col-md-3">
+			{{#if  userview}}
+			<div class="row" id="userform">{{> userform}}</div>
+			{{/if}}
 			<div class="row" id="monthform">{{> monthform}}</div>
 			<div class="row" id="taskform">{{> taskform}}</div>
 			<div class="row" id="projectform">{{> projectform}}</div>

@@ -10,6 +10,8 @@ Session.set('taskquery', 'open');
 Session.set('selectedproject', null);
 Session.set('selectedtask', null);
 
+Session.set('selecteduser', Meteor.userId());
+
 //その週の月曜から開始するように調整
 var viewmonth = new Date();
 var day = viewmonth.getDay()-1;
@@ -37,6 +39,10 @@ Template.body.helpers({
   //現在のクエリーを表示（テスト用）
   taskquery: function () {
     return Session.get('taskquery');
+  },
+  userview: function(){
+    if(Session.get('taskquery')=='userview') return true;
+    return false;
   }
 });
 
@@ -57,6 +63,12 @@ Template.body.events({
       $('.tab-content .active').removeClass('active');
       targetlink.parent('li').addClass('active');
       $('.tab-content ' + targetid).addClass('active');
+      //プロジェクトエリアの更新
+      if(taskquery != 'setting') {
+        Meteor.setTimeout(function() {
+                updateAllProjectArea(Tasks);
+        }, 1000); 
+      }
       // window.location.hash = taskquery;
       return false;
     },
@@ -276,7 +288,14 @@ Template.projectview.events({
 Template.project.helpers({
   //プロジェクトが持つタスクの一覧を取得
   tasks: function(){
-    var result = Tasks.find({prid: this._id}, {sort: {dl:1}});
+    var result;
+    // userviewモードのときは特定のユーザーのタスクのみを表示する
+    if(Session.get('taskquery')==='userview'){
+      var assignie= Session.get('selecteduser');
+      result = Tasks.find({prid: this._id, us: assignie, mbr:{$ne: true}}, {sort: {dl:1}});
+    } else {
+      result = Tasks.find({prid: this._id}, {sort: {dl:1}});
+    }
     //他のユーザーによるタスク更新を感知
     var observetimer = null;
     result.observe({
@@ -286,7 +305,7 @@ Template.project.helpers({
         observetimer  = Meteor.setTimeout(function(){
           console.log('observe added');
           updateProjectArea(sdoc.prid, Tasks);          
-        }, 300);
+        }, 500);
       },
       changed: function (newdoc, olddoc) {
         var sdoc = newdoc;
@@ -294,7 +313,7 @@ Template.project.helpers({
         observetimer  = Meteor.setTimeout(function(){
           console.log('observe updated');
           updateProjectArea(sdoc.prid, Tasks);
-        }, 300);
+        }, 500);
       },
       removed: function(olddoc){
         console.log('observe removed');
@@ -350,6 +369,10 @@ Template.task.helpers({
   },
   //タスクのブランチ位置を返す
   taskypos: function(){
+    //userviewモードのときはブランチによる移動をしない
+    if(Session.get('taskquery')==='userview'){
+      return TASKSHIFTDOWN;
+    }
     if(this.brpos){
       return this.brpos * 60 + TASKSHIFTDOWN;
     } else {

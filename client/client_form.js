@@ -355,3 +355,38 @@ Template.settingpanel.events({
     return false;
   }
 });
+
+
+// ユーザーフォーム
+Template.userform.helpers({
+  //ユーザー一覧
+  realusers: function(){
+    return Meteor.users.find({}, {sort:{username:1}});
+  },
+  virtualusers: function(){
+    return Virtuals.find({}, {sort:{username:1}});
+  },
+  //現在のユーザー
+  currentuser: function(){
+    var user = Meteor.users.findOne({_id: Session.get('selecteduser')});
+    if(!user) user = Virtuals.findOne({_id: Session.get('selecteduser')});
+    if(user) return user.username;
+  }
+});
+Template.userform.events({
+  //担当ユーザーの更新
+  'change #userviewselector': function(event){
+    //リアルユーザー→バーチャルユーザーの順で該当するユーザーを探す
+    var name = $(event.target).val();
+    var user = Meteor.users.findOne({username: name});
+    if(!user) user = Virtuals.findOne({username: name});
+    if(user){
+        Session.set('selecteduser', user._id);
+    }
+    return false;
+  },
+  //enterによるsubmitをすべて無効に
+  'submit': function(event){
+    return false;
+  }
+});

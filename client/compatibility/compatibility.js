@@ -10,7 +10,7 @@ var ONEDAYMILI = 24*60*60*1000;
 var TIMELINEDAYS_DEF = 50;
 var TIMELINEDAYS_WIDE = 120;
 //1日の幅（ピクセル）
-var DAYSPAN_DEF = 60;
+var DAYSPAN_DEF = 50;
 var DAYSPAN_WIDE = 15;
 var DAYSPAN_MIN = 20;
 
@@ -43,6 +43,11 @@ function updateAllProjectArea(tasks){
 //プロジェクトを整形する
 //プロジェクトの高さを拡げ、タスクが重ならないよう移動し、最後に接続線を引く
 function updateProjectArea(projid, tasks){
+	//userviewモードのときは別の処理を行う
+	if(Session.get('taskquery')==='userview'){
+		updateProjectAreaforUserView(projid, tasks);
+		return;
+	}
 	// console.log(projid);
 	// console.log(tasks.find({prid: projid, str: true}).count());
 	//プロジェクトに含まれる全タスクを取得
@@ -195,6 +200,52 @@ function exploreTask(task, maxbrpos, taskary, lineary){
 	}
 	// console.log('mb:' + maxbrpos);
 	return maxbrpos;
+}
+
+
+//
+function updateProjectAreaforUserView(projid, tasks){
+	//プロジェクトの高さを拡張
+	var area = $('#'+projid);
+	//サイズ設定
+	var dayspan = Session.get('dayspan');
+	var timelinedays = Session.get('timelinedays');
+	var width = (timelinedays)*dayspan;
+	if(width>$('#listarea').width()*ZOOMREVERSE) width = $('#listarea').width()*ZOOMREVERSE;
+	area.width(width);
+	var height = 60 + TASKSHIFTDOWN;
+	area.height(height);
+	var cvs = area.find('.project-cvs');
+	if(! cvs.get(0)) return;	//エラー対応
+	cvs.get(0).height = height;
+	cvs.get(0).width = width;
+	// cvs.css('top', TASKSHIFTDOWN);
+	var ctx = cvs.get(0).getContext('2d');
+	//土日をグレーアウト
+	ctx.fillStyle = '#eee';
+	for(i=0; i<=timelinedays; i++){
+		if(i%7>4){
+			ctx.fillRect(i*dayspan, 0, dayspan, height);
+		}
+	}
+	//接続線の描画
+	// console.log(lineary);
+	var viewmonth = Session.get('viewmonth');
+	var startdate = Math.round(viewmonth.getTime() / ONEDAYMILI);
+	//今日の線
+	var today = new Date();
+	today.setHours(9);
+	today.setMinutes(0);
+	today.setSeconds(0);  
+	var todayval = today.getTime() - viewmonth.getTime();
+	todayval /= (ONEDAYMILI);
+	todayval = Math.round(todayval) * dayspan;
+	ctx.strokeStyle = '#AAF';
+	ctx.lineWidth = 1;
+	ctx.beginPath();
+	ctx.moveTo(todayval, 0);
+	ctx.lineTo(todayval, height);
+	ctx.stroke();  
 }
 
 // タイムラインの描画

@@ -1,11 +1,12 @@
 <template name="monthform">
 	<div class=" panel panel-default">
+	<div class="panel-heading">Week Selector</div>
 	<div class="panel-body">
 	<form role="form">
 	<!-- 表示月選択 -->
 	<div id="monthselector">
 		<div class="form-group">
-			<label for="viewmonth">view week</label>
+			<label for="viewmonth" class="sr-only">view week</label>
 			<input type="date" class="form-control input-sm" id="viewmonth" value="{{viewmonth}}">
 		</div>
 	</div>
@@ -14,5 +15,26 @@
 	<button type="button" id="btn_rightshift" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-chevron-right"></span>7<span class="sr-only">Close</span></button>
 	</form>
 	</div>
+	</div>
+</template>
+
+
+<!-- ユーザーフォーム（特定ユーザーに絞り込む） -->
+
+<template name="userform">
+	<div class=" panel panel-success">
+		<div class="panel-heading">User Selector</div>
+		<div class="panel-body">
+			<label for="userviewselector" class="sr-only">user selector</label>
+			<input type="text" class="form-control input-sm" id="userviewselector" placeholder="username" autocomplete="on" list="users4" value="{{currentuser}}" size="10">
+				<datalist id="users4">
+			{{#each realusers}}
+    			{{> itemuser}}
+  			{{/each}}
+			{{#each virtualusers}}
+    			{{> itemuser}}
+  			{{/each}}
+			</datalist>
+		</div>
 	</div>
 </template>
