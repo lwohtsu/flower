@@ -382,6 +382,14 @@ Template.userform.events({
     if(!user) user = Virtuals.findOne({username: name});
     if(user){
         Session.set('selecteduser', user._id);
+        Meteor.setTimeout(function() {
+          updateAllProjectArea(Tasks);
+          //選択解除
+          Session.set('selectedproject', null);
+          Session.set('selectedtask', null);
+          $('.selectedtask').removeClass('selectedtask');
+          $('.selectedproject').removeClass('selectedproject');    
+        }, 300); 
     }
     return false;
   },

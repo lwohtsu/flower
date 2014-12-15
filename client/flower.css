@@ -109,7 +109,7 @@ form .list-group-item{
 
 .project{
 	/*border-bottom: 4px rgba(234,183,101, 0.6) solid;*/
-	min-height: 60px;
+	/*min-height: 60px;*/
 	position: relative;
 	overflow: hidden;
 	margin-bottom: 12px;
@@ -190,8 +190,10 @@ form .list-group-item{
 	border-style: dashed !important;
 	/*background: #ff8;*/
 	/*border-right: solid 2px #4F4 !important;*/
-    -webkit-animation: seltaskanim 0.5s infinite alternate; 
-    animation: seltaskanim 1s infinite alternate;
+	/*アニメーション重いので中止*/
+/*    -webkit-animation: seltaskanim 0.5s infinite alternate; 
+    animation: seltaskanim 1s infinite alternate;*/
+    box-shadow: 0 0 20px 0 #f77;
 }
 @-webkit-keyframes seltaskanim {
     from {box-shadow: 0 0 20px 0 #f77;}

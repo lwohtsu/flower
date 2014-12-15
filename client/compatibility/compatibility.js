@@ -207,6 +207,13 @@ function exploreTask(task, maxbrpos, taskary, lineary){
 function updateProjectAreaforUserView(projid, tasks){
 	//プロジェクトの高さを拡張
 	var area = $('#'+projid);
+	console.log(area.find('.task').length);
+	if(area.find('.task').length<1) {
+		console.log('hide!');
+		area.height(0);
+		// area.hide();
+		return;
+	}
 	//サイズ設定
 	var dayspan = Session.get('dayspan');
 	var timelinedays = Session.get('timelinedays');
