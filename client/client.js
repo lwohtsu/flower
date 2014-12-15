@@ -72,7 +72,7 @@ Template.body.events({
           Session.set('selectedtask', null);
           $('.selectedtask').removeClass('selectedtask');
           $('.selectedproject').removeClass('selectedproject');    
-        }, 1000); 
+        }, 300); 
       }
       // window.location.hash = taskquery;
       return false;
