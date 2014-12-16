@@ -172,13 +172,22 @@ Template.projectview.rendered = function(){
         switch(event.keyCode){
           case 37: //左へタスクを移動（deadline変更）
             task.dl.setTime(task.dl.getTime() - ONEDAYMILI);
-            // console.log(task.dl);
-            Meteor.call('updateTaskDeadline', task._id, task.dl, true);
+            // ユーザービューのときは子タスクを連動しない
+            if(Session.get('taskquery')==='userview'){
+              Meteor.call('updateTaskDeadline', task._id, task.dl, false);
+            } else {
+              Meteor.call('updateTaskDeadline', task._id, task.dl, true);
+            }
             return false;
             break;
           case 39: //右へタスクを移動（deadline変更）
             task.dl.setTime(task.dl.getTime() + ONEDAYMILI);
-            Meteor.call('updateTaskDeadline', task._id, task.dl, true);
+            // ユーザービューのときは子タスクを連動しない
+            if(Session.get('taskquery')==='userview'){
+              Meteor.call('updateTaskDeadline', task._id, task.dl, false);
+            } else {
+              Meteor.call('updateTaskDeadline', task._id, task.dl, true);
+            }
             return false;
             break;        
         }
