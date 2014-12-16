@@ -60,7 +60,7 @@
 			</label>
 			<hr>
 			<!-- タスクタイマー -->
-			<div class="form-group">
+			<div class="form-group hidden">
 				<label for="tsk_timer" class="sr-only">task timer</label>
 				<ul class="list-inline">
 					{{> tasktimeritem}}
@@ -74,9 +74,9 @@
 				</ul>
 			</div>
 
-			<hr/>
+			<hr class="hidden" />
 			<!-- タスクメモ（Markdown） -->
-			<div class="form-group">
+			<div class="form-group hidden" >
 				<label for="tsk_memo">memo (markdown)
 					<button class="btn btn-xs btn-memoedit"><span class="glyphicon glyphicon-pencil"></span></button>
 				</label>
@@ -84,7 +84,7 @@
 				<div id="tsk_memo_result" class="memodown"></div>
 			</div>
 
-			<hr/>
+			<hr class="hidden"/>
 
 			<!-- コントロールボタン -->
 			<div class="list-inline">
