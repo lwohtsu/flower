@@ -27,23 +27,24 @@ form .list-group-item{
 .mainarea{
 	background-color: #666;
 }
-/*#consolearea{
-	position: fixed;
-	bottom: 0px;
-	background: #fff;
-}*/
 
 #listarea{
 	overflow: scroll;
 }
 #consolearea{
 	overflow: scroll;
+	position: absolute;
+	right: 0;
+	top: 142px;
+	background: rgba(80, 80, 80, 0.5);
+	border:solid 8px rgba(80, 80, 80, 0.5);
 }
 
 .virtualusername{
 	display: inline-block;
 	min-width: 100px;
 	line-height: 2;
+	z-index: 2000;
 }
 
 /*.img-status{

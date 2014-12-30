@@ -348,7 +348,16 @@ Template.settingpanel.events({
   //バーチャルユーザーのリアル名変更
   'change .v-realname': function(event){
     var newname = $(event.target).val();
-    Meteor.call('updateVirtualRealName', $(event.target).data('vid'), newname);
+    Meteor.call('updateVirtualRealName', this._id, newname);
+  },
+  //バーチャルユーザーの削除
+  'click .del-vuser': function(event){
+    var vuid = this._id;
+    bootbox.confirm("Delete Virtual User '" + this.username + "''?", function(result) {
+      if(result){
+        Meteor.call('deleteVirtualUser', vuid);
+      }
+    }); 
   },
   //enterによるsubmitをすべて無効に
   'submit': function(event){

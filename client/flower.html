@@ -38,6 +38,9 @@
 					</a>
 				</li>
 				</ul>
+				<div  class="navbar-right">
+					<button class="btn" id="btn_showconsole">console</button>
+				</div>
 			</div>
 		</div>
 		</nav>
@@ -49,7 +52,7 @@
 		{{#if currentUser}}
 		<!-- ログイン時の表示 -->
 		<!-- リストエリア（プロジェクトやタスクが表示される領域） -->
-		<div id="listarea" class="tab-content col-md-9">
+		<div id="listarea" class="tab-content col-md-12">
 			<!-- open〜UserViewはクエリーが違うだけで表示するパネルは同一 -->
 			<div role="tabpanel" class="tab-pane active row" id="projectpanel">
 			{{> projectview}}

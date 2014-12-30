@@ -271,10 +271,17 @@ Meteor.methods({
 			realname: vrname
 		});
 	},
+	//バーチャルユーザーのリアル名（？）修正
 	updateVirtualRealName: function(vid, vrname){
 		//セキュリティチェック
 		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
 		Virtuals.update({_id: vid}, {$set:{realname: vrname}});
+	},
+	//バーチャルユーザーの削除
+	deleteVirtualUser: function(vid){
+		//セキュリティチェック
+		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
+		Virtuals.remove({_id: vid});
 	}
 
 });

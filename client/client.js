@@ -77,6 +77,10 @@ Template.body.events({
       // window.location.hash = taskquery;
       return false;
     },
+    //コンソールの表示非表示
+    "click #btn_showconsole": function(event){
+      $('#consolearea').slideToggle();
+    },
 });
 
 //プロジェクトビューのヘルパー
