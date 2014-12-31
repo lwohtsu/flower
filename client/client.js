@@ -12,6 +12,8 @@ Session.set('selectedtask', null);
 
 Session.set('selecteduser', Meteor.userId());
 
+Session.set('singlemode', false);
+
 //その週の月曜から開始するように調整
 var viewmonth = new Date();
 var day = viewmonth.getDay()-1;
@@ -70,7 +72,7 @@ Template.body.events({
           //選択解除
           Session.set('selectedproject', null);
           Session.set('selectedtask', null);
-          $('.selectedtask').removeClass('selectedtask');
+          deselectTask();
           $('.selectedproject').removeClass('selectedproject');    
         }, 300); 
       }
@@ -78,8 +80,16 @@ Template.body.events({
       return false;
     },
     //コンソールの表示非表示
-    "click #btn_showconsole": function(event){
+    'click #btn_showconsole': function(event){
       $('#consolearea').slideToggle();
+    },
+    // シングルモード
+    'change #singlemode': function(event){
+      if(event.target.checked){
+        Session.set('singlemode', true);
+      } else {
+        Session.set('singlemode', false);
+      }
     },
 });
 
@@ -102,7 +112,11 @@ Template.projectview.helpers({
     if(Session.get('taskquery')==='closed'){
       return Projects.find({closed: true}, {sort: {create:1}});
     }
-    return Projects.find({closed: {$ne:true}}, {sort: {create:1}});
+    var selproj = Session.get('selectedproject');
+    if(selproj && Session.get('singlemode')){
+      return Projects.find({closed: {$ne:true}, _id: selproj}, {sort: {create:1}});
+    }
+    return Projects.find({closed: {$ne:true}}, {sort: {create:1}});      
   },
 });
 
@@ -257,8 +271,8 @@ Template.projectview.events({
     // console.log('taskid:' + target.attr('id'));
     Session.set('selectedtask', target.attr('id'));
     //選択強調
-    $('.selectedtask').removeClass('selectedtask');
-    target.addClass('selectedtask');
+    deselectTask();
+    selectTask(target);
   },
   //プロジェクトがクリックされた
   'click .project': function(event){
@@ -275,7 +289,7 @@ Template.projectview.events({
     Session.set('selectedproject', null);
     Session.set('selectedtask', null);
     //選択強調
-    $('.selectedtask').removeClass('selectedtask');
+    deselectTask();
     $('.selectedproject').removeClass('selectedproject');    
     return false;
   },

@@ -78,8 +78,8 @@ Template.taskform.events({
         var target = $('#'+result);
         Session.set('selectedtask', result);
         //選択強調
-        $('.selectedtask').removeClass('selectedtask');
-        target.addClass('selectedtask');
+        deselectTask();
+        selectTask(target);
         // TODO：ブランチの配置を調整し、行高調整して背景の線をリドローする
         // updateProjectArea(prid, Tasks);
       });
@@ -98,8 +98,8 @@ Template.taskform.events({
         var target = $('#'+result);
         Session.set('selectedtask', result);
         //選択強調
-        $('.selectedtask').removeClass('selectedtask');
-        target.addClass('selectedtask');
+        deselectTask();
+        selectTask(target);
         // TODO：ブランチの配置を調整し、行高調整して背景の線をリドローする
         // updateProjectArea(prid, Tasks);
       });
@@ -140,8 +140,24 @@ Template.taskform.events({
   //デッドラインの更新
   'change #tsk_deadline': function(event){
       var val = new Date($(event.target).val());
-      var prid = this.prid;
-      Meteor.call('updateTaskDeadline', this._id, val, true);
+      var tid = this._id;
+      var olddl = this.dl;
+      if(Math.abs(olddl.getTime() - val.getTime()) < 100 * ONEDAYMILI){
+        Meteor.call('updateTaskDeadline', tid, val, true);
+      } else {
+        //100日以上変更する場合は確認
+        bootbox.confirm("change deadline to '" +
+          val.getFullYear() + '/' + (val.getMonth()+1) + '/'  + val.getDay() + "'?", 
+          function(result) {
+            if(result){
+              Meteor.call('updateTaskDeadline', tid, val, true);
+            } else {
+              $('#tsk_deadline').val(olddl.getFullYear() +'-' + 
+                parseDate(olddl.getMonth()+1) + '-' + 
+                parseDate(olddl.getDate()) );
+            }
+        });
+      }      
       // , function(error, result){
       //   // TODO：ブランチの配置を調整し、行高調整して背景の線をリドローする
       //   updateProjectArea(prid, Tasks);      
@@ -396,7 +412,7 @@ Template.userform.events({
           //選択解除
           Session.set('selectedproject', null);
           Session.set('selectedtask', null);
-          $('.selectedtask').removeClass('selectedtask');
+          deselectTask();
           $('.selectedproject').removeClass('selectedproject');    
         }, 300); 
     }

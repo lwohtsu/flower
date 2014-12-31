@@ -28,6 +28,41 @@ function resizeAllArea(){
 	$('#consolearea').height(sh - hh);
 }
 
+//タスクの選択解除
+function deselectTask(){
+    $('.selectedtask').draggable('destroy');
+    $('.selectedtask').removeClass('selectedtask');
+}
+var g_dragpos;
+function selectTask(target){
+	var dayspan = Session.get('dayspan');
+	target.addClass('selectedtask');
+	target.draggable({
+		axis: "x",
+		grid: [ dayspan, 60 ],
+		start: function( event, ui ) {
+			g_dragpos = ui.position.left;
+		},
+		stop: function( event, ui ) {
+			var dayspan = Session.get('dayspan');
+			var shift = (ui.position.left - g_dragpos)/dayspan;
+			// console.log(shift);
+			if(shift !== 0){
+				var task = Tasks.findOne({_id: event.target.id});
+				// console.log(task);
+				if(task){
+		            task.dl.setTime(task.dl.getTime() +  shift * ONEDAYMILI);
+		            // ユーザービューのときは子タスクを連動しない
+		            if(Session.get('taskquery')==='userview'){
+		              Meteor.call('updateTaskDeadline', task._id, task.dl, false);
+		            } else {
+		              Meteor.call('updateTaskDeadline', task._id, task.dl, true);
+		            }            
+				}
+			}
+		}
+	});
+}
 
 //日付をゼロパディングする
 function parseDate(num) {
