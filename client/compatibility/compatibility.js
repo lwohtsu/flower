@@ -70,6 +70,9 @@ function parseDate(num) {
 }
 
 function updateAllProjectArea(tasks){
+	// ソート
+	sortPinnedProject();
+	// 全プロジェクトの配置
 	$('.project').each(function(index, element){
 		updateProjectArea(element.id, tasks);
 	});
@@ -238,7 +241,7 @@ function exploreTask(task, maxbrpos, taskary, lineary){
 }
 
 
-//
+//ユーザービュー用の処理
 function updateProjectAreaforUserView(projid, tasks){
 	//プロジェクトの高さを拡張
 	var area = $('#'+projid);
@@ -288,6 +291,17 @@ function updateProjectAreaforUserView(projid, tasks){
 	ctx.moveTo(todayval, 0);
 	ctx.lineTo(todayval, height);
 	ctx.stroke();  
+}
+
+// pinnedしたプロジェクトを先頭に
+function sortPinnedProject(){
+	var pinned = Meteor.user().pinned;
+	if(pinned){
+		for(var i=0; i<pinned.length; i++){
+			$('#'+pinned[i]).prependTo('.projectlist');
+			// console.log('prepend to ' + pinned[i]);
+		}
+	}
 }
 
 // タイムラインの描画

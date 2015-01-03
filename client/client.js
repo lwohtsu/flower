@@ -124,6 +124,7 @@ Template.projectview.helpers({
 Template.projectview.rendered = function(){
   updateTimeline();
   resizeAllArea();
+  sortPinnedProject();
 
   //リサイズイベント
   var resizetimer = null;
@@ -311,7 +312,28 @@ Template.projectview.events({
       updateTimeline();
       updateAllProjectArea(Tasks);
     }
-  }
+  },
+  // プロジェクト固定ボタン
+  'click .btn-pinned': function(event){
+    var pinned = Meteor.user().pinned;
+    var pid = this._id;
+    if(!pinned) pinned = [pid];
+    else {
+      //数が10個以上あるなら減らす
+      if(pinned.length > 9){
+        pinned.shift();
+      }
+      // すでに配列にあるなら削除し、末尾に追加
+      pinned.some(function(v, i){
+        if (v==pid) pinned.splice(i,1);    
+      });
+      pinned.push(pid);
+    }
+    Meteor.call('updatePinnedList', pinned, function(){
+      // console.log(pinned);
+      sortPinnedProject();
+    });
+  },
 });
 
 

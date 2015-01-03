@@ -33,12 +33,16 @@ form .list-group-item{
 }
 #consolearea{
 	overflow: scroll;
-	position: absolute;
-	right: 0;
-	top: 142px;
 	background: rgba(80, 80, 80, 0.5);
-	border:solid 8px rgba(80, 80, 80, 0.5);
+	border:solid 8px rgba(80, 80, 80, 0.7);
 	z-index: 999;
+}
+@media screen and (min-width: 800px){
+	#consolearea{
+		position: absolute;
+		right: 0;
+		top: 142px;
+	}
 }
 
 .chk-singlemode{

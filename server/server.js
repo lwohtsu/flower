@@ -282,6 +282,12 @@ Meteor.methods({
 		//セキュリティチェック
 		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
 		Virtuals.remove({_id: vid});
+	},
+	// pinnedリストを現在のユーザーにセット
+	updatePinnedList:function(pinnedlist){
+		//セキュリティチェック
+		if (! Meteor.userId()) throw new Meteor.Error("not-authorized");
+		Meteor.users.update({_id: Meteor.userId()}, {$set: {pinned: pinnedlist}});
 	}
 
 });
@@ -291,8 +297,8 @@ function updateAllTaskDeadline(task, shift){
 	//このタスクの日付のアップデート
 	task.dl.setTime(task.dl.getTime() + shift);
 	Tasks.update({_id: task._id}, {$set: {dl: task.dl}});
-	//子タスクを辿る
-	if(task.ctsk){
+	//子タスクを辿る（マスターブランチでは子タスクは動かさない）
+	if(task.ctsk && !task.mbr){
 		var ctsk = Tasks.findOne({_id: task.ctsk});
 		if(ctsk){
 			updateAllTaskDeadline(ctsk, shift);
