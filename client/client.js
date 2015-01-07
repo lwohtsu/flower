@@ -137,7 +137,7 @@ Template.projectview.rendered = function(){
       }, 500);
   });
 
-  //スクロールイベント
+  //スクロールイベントに伴ってタイムラインの位置を移動
   var scrolltimer = null;
   $('#listarea').scroll(function(event){
     Meteor.clearTimeout(scrolltimer);
@@ -262,6 +262,7 @@ Template.projectview.rendered = function(){
 
 
 //プロジェクトビューのイベント
+var phase;
 Template.projectview.events({
   //画面上のタスクがクリックされた
   'click .task': function(event){
@@ -274,6 +275,7 @@ Template.projectview.events({
     //選択強調
     deselectTask();
     selectTask(target);
+    phase = 1;
   },
   //プロジェクトがクリックされた
   'click .project': function(event){
@@ -284,6 +286,13 @@ Template.projectview.events({
     //選択強調
     $('.selectedproject').removeClass('selectedproject');
     target.addClass('selectedproject');
+    // このイベントフェーズでタスクがクリックされていない（プロジェクトのみクリックされた）場合は
+    // タスク選択を解除する
+    if(phase != 1) {
+      deselectTask();
+      Session.set('selectedtask', null);
+    }
+    phase = 2;
   },
   //タイムラインがクリックされた
   'click #cvs_timeline': function(event){
@@ -454,7 +463,7 @@ Template.task.helpers({
   },
 });
 
-//プロジェクトビューのレンダー
+//プロジェクトのレンダー
 Template.project.rendered = function(){
   updateProjectArea(this.firstNode.id, Tasks);
 };
